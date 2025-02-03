@@ -8,10 +8,10 @@
 import SwiftUI
 
 @main
-struct shapecloudappApp: App {
+struct MainApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
-        }
+            LoginView()
+        }.environment(\.font, .custom(ThemeFonts().geistRegular, size: 14))
     }
 }
