@@ -15,5 +15,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView().environment(\.font, .custom(ThemeFonts().geistRegular, size: 14))
+    LoginView().environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 14))
 }

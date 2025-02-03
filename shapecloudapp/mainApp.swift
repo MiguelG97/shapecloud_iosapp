@@ -11,7 +11,8 @@ import SwiftUI
 struct MainApp: App {
     var body: some Scene {
         WindowGroup {
-            LoginView()
-        }.environment(\.font, .custom(ThemeFonts().geistRegular, size: 14))
+            LaunchView().statusBarHidden(true)
+        }
+        .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 14))
     }
 }

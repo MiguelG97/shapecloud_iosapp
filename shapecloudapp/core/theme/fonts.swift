@@ -4,11 +4,17 @@
 //
 //  Created by Miguel Gutiérrez on 2/02/25.
 //
-//import SwiftUI
-//extension Font {
-//    static let theme : ThemeFonts = ThemeFonts()
-//}
+
 struct ThemeFonts{
+    private static var _instance: ThemeFonts?
+    private init(){}
+    public static var shared: ThemeFonts {
+        if _instance == nil {
+            _instance = ThemeFonts()
+        }
+        return _instance!
+    }
+    
     let geistBlack: String = "Geist-Black"
     let geistBold: String = "Geist-Bold"
     let geistExtraBold: String = "Geist-ExtraBold"
