@@ -20,13 +20,13 @@ struct STextField<Icon:View>: View {
             HStack(alignment:.center){
                 icon.foregroundStyle(Color.theme.icon)
                 
-                TextField("Field", text: $value, prompt: Text(placeholder).foregroundStyle(Color.theme.foreground_muted))
+                TextField("Field", text: $value, prompt: Text(placeholder)
+                    .foregroundStyle(Color.theme.foreground_muted))
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled(true)
-//                                .background(.green)
             }
+            .font(.callout)
             .frame(minHeight: 50)
-//                        .background(.red)
             .overlay(alignment: .bottom) {
                 Rectangle().frame(height: 1)
                     .foregroundStyle(.black)
@@ -38,4 +38,5 @@ struct STextField<Icon:View>: View {
 
 #Preview {
     STextField(value:.constant(""),icon: Image("envelope"))
+        .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 14))
 }

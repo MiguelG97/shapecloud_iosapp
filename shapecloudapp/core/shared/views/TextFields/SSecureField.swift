@@ -20,15 +20,18 @@ struct SSecureField: View {
             
             HStack(alignment:.center) {
                 Image(systemName:"lock").foregroundStyle(Color.theme.icon)
+                    
+                
                 if(isPasswordVisible){
                     TextField("password",text: $password)
+                        .font(.callout)
                         .textContentType(.password)
                         .autocorrectionDisabled(true)
                         .textInputAutocapitalization(.never)
                 }
                 else{
-                    SecureField(text: $password, prompt: Text("********")) {
-                        
+                    SecureField(text: $password, prompt: Text("********")
+                        .font(.callout)) {
                     }
                     .textContentType(.password)
                 }
@@ -46,9 +49,11 @@ struct SSecureField: View {
                     .foregroundStyle(.black)
             }
         }
+        .font(.callout)
     }
 }
 
 #Preview {
     SSecureField(password: .constant(""), label: "Password")
+        .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
 }
