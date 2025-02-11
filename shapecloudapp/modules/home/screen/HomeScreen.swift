@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+enum STab : Int{
+    case home
+    case profile
+    case settings
+    
+}
+
 struct HomeScreen: View {
     @Environment(\.screenSize) private var screenSize : CGSize
     @Environment(\.safeArea) private var safeArea : EdgeInsets
@@ -18,15 +25,26 @@ struct HomeScreen: View {
                     .frame(maxWidth: .infinity,maxHeight: safeArea.top*0.8)
                 SNavBarView()
                 
-                VStack {
+                TabView {
+                    Color.red.tag(1)
+                        .toolbarVisibility(.hidden, for: .tabBar)
                     
+                    Color.blue.tag(2)
+                        .toolbarVisibility(.hidden, for: .tabBar)
                 }
-                .frame(maxWidth: .infinity,maxHeight: .infinity)
-                .background {
-                    Color.red
-                }
+//                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 
-                STabBarView()
+                
+                
+//                VStack {
+//                    
+//                }
+//                .frame(maxWidth: .infinity,maxHeight: .infinity)
+//                .background {
+//                    Color.red
+//                }
+//                
+//                STabBarView()
                 
             }
             .ignoresSafeArea()
