@@ -7,54 +7,57 @@
 
 import SwiftUI
 
+
 enum STab : Int{
-    case home
+    case projects
+    case search
+    case support
     case profile
-    case settings
     
 }
 
 struct HomeScreen: View {
+    
     @Environment(\.screenSize) private var screenSize : CGSize
     @Environment(\.safeArea) private var safeArea : EdgeInsets
     
+    @State private var selectedTab : STab = .projects
+    @State private var areBarsHidden: Bool = false
+    
     var body: some View {
         NavigationStack {
-            VStack {
-                Spacer()
-                    .frame(maxWidth: .infinity,maxHeight: safeArea.top*0.8)
-                SNavBarView()
-                
-                TabView {
-                    Color.red.tag(1)
-                        .toolbarVisibility(.hidden, for: .tabBar)
+            ZStack(alignment:.bottom) {
+                VStack {
+                    Spacer()
+                        .frame(maxWidth: .infinity,maxHeight: safeArea.top*0.8 + 50)
                     
-                    Color.blue.tag(2)
-                        .toolbarVisibility(.hidden, for: .tabBar)
+                    if selectedTab == .projects{
+                        SProjectsView(areBarsHidden: $areBarsHidden)
+                    }
+                    else if selectedTab == .search{
+                        
+                    }
+                    else if selectedTab == .support{
+                        
+                    }
+                    else if selectedTab == .profile{
+                        
+                    }
+                    
                 }
-//                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                .padding(.bottom,20)
+                .frame(maxWidth: .infinity,maxHeight: .infinity,alignment: .top)
+                .overlay(alignment: .top) {
+                    SNavBarView()
+                        .offset(y: safeArea.top*0.8)
+                        .background {
+                            Color.white
+                        }
+                }
                 
-                
-                
-//                VStack {
-//                    
-//                }
-//                .frame(maxWidth: .infinity,maxHeight: .infinity)
-//                .background {
-//                    Color.red
-//                }
-//                
-//                STabBarView()
-                
+                SCustomTabBar(selectedTab: $selectedTab,isBarHidden: areBarsHidden)
             }
             .ignoresSafeArea()
-            .frame(maxWidth: .infinity,maxHeight: screenSize.height,alignment: .top)
-//            List {
-//                       NavigationLink("Row", destination: Text("Tapped on row"))
-//                   }
-//                   .navigationTitle("List")
-//                   .navigationBarTitleDisplayMode(.large)
-                   
         }
     }
 }

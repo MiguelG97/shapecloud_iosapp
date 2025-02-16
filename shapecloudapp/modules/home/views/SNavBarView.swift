@@ -19,9 +19,6 @@ struct SNavBarView: View {
                     .frame(width: 25,height: 25)
             }
             .padding(.all, 12)
-//            .background{
-//                Color.green
-//            }
             
             Spacer()
             Text("SHAPECLOUD")
@@ -37,16 +34,13 @@ struct SNavBarView: View {
                     .foregroundStyle(Color.theme.icon)
             }
             .padding(.all, 5)
-//            .background{
-//                Color.green
-//            }
 
         }
         .padding(.horizontal, 12)
         .frame(maxWidth:.infinity,maxHeight:60)
-//        .background {
-//            Color.red
-//        }
+        .background {
+            Color.white
+        }
     }
 }
 

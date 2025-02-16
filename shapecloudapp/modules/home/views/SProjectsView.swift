@@ -8,11 +8,118 @@
 import SwiftUI
 
 struct SProjectsView: View {
+    
+    @State private var searchText: String = ""
+    @State private var lastScrollOffset: CGFloat = 0
+    @Binding var areBarsHidden: Bool
+    @State private var contentHeight: CGFloat = 0
+    @Environment(\.safeArea) private var safeArea: EdgeInsets
+    @Environment(\.screenSize) private var screenSize: CGSize
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        VStack{
+            ScrollView(.vertical){
+                GeometryReader { geo->Color in
+                    DispatchQueue.main.async {
+                        
+                        //top left corner of scroll view offset with respect to top left screen corner
+                        let offset = geo.frame(in: .global).minY
+                        
+                        let topOffsetLimit = safeArea.top + 100
+                        let isAtTop = offset>topOffsetLimit
+                        
+                        let bottomOffsetLimit = safeArea.top + safeArea.bottom + screenSize.height - contentHeight
+                        let isAtBottom = offset <= bottomOffsetLimit
+                        
+                        if isAtTop || isAtBottom {
+                            return
+                        }
+                        print(offset,safeArea.top +
+                              safeArea.bottom + screenSize.height - contentHeight)
+                        
+                        if offset < lastScrollOffset && abs(offset - lastScrollOffset)>1 {
+                            withAnimation(.easeInOut(duration: 0.5)) {
+                                    areBarsHidden = true
+                                }
+                        }
+                        else if offset > lastScrollOffset && abs(offset - lastScrollOffset)>1 {
+                            withAnimation(.easeInOut(duration: 0.5)) {
+                                areBarsHidden = false
+                            }
+                        }
+                        lastScrollOffset = offset
+                    }
+                    
+                    return Color.clear
+                }.frame(height: 0)
+                
+                VStack(spacing:16) {
+                    SProjectListItem()
+                    SProjectListItem()
+                    SProjectListItem()
+                    SProjectListItem()
+                    SProjectListItem()
+                    SProjectListItem()
+                    SProjectListItem()
+                    SProjectListItem()
+                    SProjectListItem()
+                    SProjectListItem()
+                }
+                .background {
+                    GeometryReader { geo in
+                        Color.clear.onAppear {
+                            print("contentHeight",geo.size.height)
+                            print("viewHeight",screenSize.height)
+                            contentHeight = geo.size.height
+                        }
+                    }
+                }
+            }
+            .padding(.top,areBarsHidden ? 0 : 130)
+            .overlay(alignment: .top) {
+                VStack(spacing:24) {
+                    HStack {
+                        Text("Your")
+                        Text("Projects")
+                            .fontWeight(.bold)
+                        Text("Are Here!")
+                            
+                    }
+                    .font(.title)
+                    .frame(maxWidth: .infinity,alignment: .leading)
+                    .padding(.horizontal,12)
+                    .padding(.vertical,0)
+                    
+                    HStack {
+                        SSearchField(searchValue: $searchText)
+
+                        Button {
+                            
+                        } label: {
+                            Image(systemName: "slider.horizontal.3")
+                                .foregroundStyle(.white)
+                                .fontWeight(.medium)
+                                .font(.system(size: 24))
+                                .frame(width:50.66,height: 50.66)
+                                .background {
+                                    Circle().fill(Color.theme.primary)
+                                }
+                        }
+                    }
+                }
+                .offset(y: areBarsHidden ? -130 : 0)
+            }
+            
+        }
+        .padding(.vertical,12)
+        .padding(.horizontal, 20)
     }
 }
 
 #Preview {
-    SProjectsView()
+    SProjectsView(areBarsHidden: .constant(false))
+        .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
+        .environment(\.screenSize, CGSize(width: 402, height: 874))
+        .environment(\.safeArea, EdgeInsets(top: 62, leading: 0, bottom: 34, trailing: 0))
 }
