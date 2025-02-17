@@ -1,5 +1,5 @@
 //
-//  SProjectListItem.swift
+//  SProjectItem.swift
 //  shapecloudapp
 //
 //  Created by Miguel Gutiérrez on 14/02/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SProjectListItem: View {
+struct SProjectItem: View {
     var body: some View {
         VStack(alignment:.leading) {
             VStack(alignment:.leading) {
@@ -69,7 +69,7 @@ struct SProjectListItem: View {
 }
 
 #Preview {
-    SProjectListItem().environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
+    SProjectItem().environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
         .environment(\.screenSize, CGSize(width: 402, height: 874))
         .environment(\.safeArea, EdgeInsets(top: 62, leading: 0, bottom: 34, trailing: 0))
 }

@@ -7,21 +7,25 @@
 
 import SwiftUI
 
-struct SNavBarView: View {
+struct SNavBarView<Icon:View>: View {
+    
+    var title: String = "SHAPECLOUD"
+    var icon: Icon
+    var iconCallBack: (() -> Void)?
+    
     var body: some View {
         HStack {
             Button {
-                
+                iconCallBack?()
             } label: {
-                Image(systemName: "line.3.horizontal")
-                    .font(.system(size: 25,weight: .semibold))
+                icon.font(.system(size: 25,weight: .semibold))
                     .foregroundStyle(Color.theme.icon_strong)
                     .frame(width: 25,height: 25)
             }
             .padding(.all, 12)
             
             Spacer()
-            Text("SHAPECLOUD")
+            Text(title)
                 .font(.headline)
                 .fontWeight(.semibold)
             Spacer()
@@ -45,6 +49,6 @@ struct SNavBarView: View {
 }
 
 #Preview {
-    SNavBarView()
+    SNavBarView(icon:Image(systemName: "line.3.horizontal"))
         .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
 }

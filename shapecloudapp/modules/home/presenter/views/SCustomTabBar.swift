@@ -42,16 +42,36 @@ struct SCustomTabBar: View {
             
             HStack {
                 HStack(spacing:screenSize.width*0.1) {
-                    Image(systemName: "house")
-                    Image(systemName: "magnifyingglass")
+                    Button {
+                        selectedTab = .projects
+                    } label: {
+                        Image(systemName: "house")
+                    }
+
+                    Button {
+                        selectedTab = .search
+                    } label: {
+                        Image(systemName: "magnifyingglass")
+                    }
+
                 }
                 .frame(maxWidth: .infinity,alignment: .leading)
                 
                 Spacer()
                 
                 HStack(spacing:screenSize.width*0.1) {
-                    Image(systemName: "questionmark.circle")
-                    Image(systemName: "person")
+                    Button {
+                        selectedTab = .support
+                    } label: {
+                        Image(systemName: "questionmark.circle")
+                    }
+
+                    Button {
+                        selectedTab = .profile
+                    } label: {
+                        Image(systemName: "person")
+                    }
+
                 }
                 .frame(maxWidth:.infinity,alignment: .trailing)
             }
