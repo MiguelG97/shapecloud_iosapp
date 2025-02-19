@@ -13,7 +13,7 @@ struct MainApp: App {
         
         WindowGroup {
             GeometryReader { proxy in
-                HomeScreen()
+                HomeScreen(store: Sstore)
                     .environment(\.screenSize, proxy.size)
                     .environment(\.safeArea, proxy.safeAreaInsets)
                     .onAppear {

@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct SProjectsScreen: View {
+    @Bindable var store: StoreOf<ProjectsFeature>
     
     @State private var searchText: String = ""
     @State private var lastScrollOffset: CGFloat = 0
@@ -15,20 +17,10 @@ struct SProjectsScreen: View {
     @State private var contentHeight: CGFloat = 0
     @Environment(\.safeArea) private var safeArea: EdgeInsets
     @Environment(\.screenSize) private var screenSize: CGSize
-    @State private var projectItems: [Project] = [
-        Project(name: "Project 1", location: "Description 1",companyId: "1"),
-           Project(name: "Project 2", location: "Description 2",companyId: "2"),
-           Project(name: "Project 3", location: "Description 3",companyId: "3"),
-           Project(name: "Project 4", location: "Description 4",companyId: "4"),
-           Project(name: "Project 5", location: "Description 5",companyId: "5"),
-        Project(name: "Project 6", location: "Description 6",companyId: "6"),
-    ]
-    
-    @State private var projectPath : [Project] = []
     
     var body: some View {
         
-        NavigationStack(path:$projectPath) {
+        NavigationStack(path:$store.navigationPath.sending(\.setNavigationPath)) {
             VStack{
                 ScrollView(.vertical){
                     GeometryReader { geo->Color in
@@ -66,7 +58,7 @@ struct SProjectsScreen: View {
                     }.frame(height: 0)
                     
                     VStack(spacing:16) {
-                        ForEach(projectItems,id:\.companyId) { projectItem in
+                        ForEach(store.projectItems,id:\.companyId) { projectItem in
                             NavigationLink(value: projectItem) {
                                 SProjectItem()
                                     .foregroundStyle(Color.theme.foreground)
@@ -131,7 +123,9 @@ struct SProjectsScreen: View {
 }
 
 #Preview {
-    SProjectsScreen(areBarsHidden: .constant(false))
+    SProjectsScreen(store:Store(initialState: ProjectsFeature.State(), reducer: {
+        ProjectsFeature()
+    }),areBarsHidden: .constant(false))
         .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
         .environment(\.screenSize, CGSize(width: 402, height: 874))
         .environment(\.safeArea, EdgeInsets(top: 62, leading: 0, bottom: 34, trailing: 0))
