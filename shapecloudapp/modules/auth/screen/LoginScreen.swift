@@ -57,7 +57,7 @@ struct LoginScreen: View {
             .background{
                 Color.white
             }
-            .clipShape(.rect(topLeadingRadius: 140))
+            .clipShape(.rect(topLeadingRadius: 80))
             
         }
         .ignoresSafeArea()

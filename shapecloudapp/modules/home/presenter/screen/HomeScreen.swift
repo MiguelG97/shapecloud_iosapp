@@ -23,21 +23,34 @@ struct HomeScreen: View {
     @Environment(\.screenSize) private var screenSize : CGSize
     @Environment(\.safeArea) private var safeArea : EdgeInsets
     
+    var isNestedView: Bool {
+        switch store.selectedTab {
+        case .projects:
+            return store.projects.navigationPath.count > 0
+        case .profile:
+            return false
+        case .search:
+            return false
+        case .support:
+            return false
+        }
+    }
+    
     @State private var areBarsHidden: Bool = false
     
     var body: some View {
          
         ZStack(alignment:.bottom) {
             VStack {
-                WithViewStore(store, observe: \.projects) { projectsViewStore in
-                    if projectsViewStore.navigationPath.count == 0{
-                        Spacer()
-                            .frame(maxWidth: .infinity,maxHeight: safeArea.top*0.8 + 50)
-                    }
-                }
                 
                 switch store.selectedTab {
                 case .projects:
+//                    let isProjectPathEmpty = store.projects.navigationPath.count == 0
+//                    if isProjectPathEmpty{
+//
+//                    }
+                    Spacer()
+                        .frame(maxWidth: .infinity,maxHeight: safeArea.top*0.8 + 50)
                     SProjectsScreen(store:store.scope(state: \.projects, action: \.projects),areBarsHidden: $store.areBarsHidden.sending(\.setAreBarsHidden))
                 case .search:
                     VStack {
@@ -57,10 +70,8 @@ struct HomeScreen: View {
             .padding(.bottom,20)
             .frame(maxWidth: .infinity,maxHeight: .infinity,alignment: .top)
             .overlay(alignment: .top) {
-                //??conditionally remove it when navPath has at least 1 item
-                //apparently i might need to repeat this component on every tab view!
-                SNavBarView(title:"SHAPECLOUD",icon: Image(systemName: store.isNestedView ? "chevron.backward":"line.3.horizontal"),iconCallBack: {
-//                    store.send(.)
+                SNavBarView(title:"SHAPECLOUD",icon: Image(systemName: isNestedView ? "chevron.backward":"line.3.horizontal"),iconCallBack: {
+                    store.send(.popNavigation)
                 })
                 .offset(y: safeArea.top*0.8)
                 .background {
@@ -68,7 +79,6 @@ struct HomeScreen: View {
                     }
             }
             
-            //conditionally remove it when ??
             SCustomTabBar(selectedTab: $store.selectedTab.sending(\.setSelectedTab),isBarHidden: store.areBarsHidden)
         }
         .ignoresSafeArea()

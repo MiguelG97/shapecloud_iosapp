@@ -17,6 +17,7 @@ struct SProjectsScreen: View {
     @State private var contentHeight: CGFloat = 0
     @Environment(\.safeArea) private var safeArea: EdgeInsets
     @Environment(\.screenSize) private var screenSize: CGSize
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         
@@ -113,7 +114,7 @@ struct SProjectsScreen: View {
                 
             }
             .padding(.vertical,12)
-            .padding(.horizontal, 20)
+            .padding(.horizontal, SScreenSize.hPadding)
             .navigationDestination(for: Project.self) { project in
                 SFoldersScreen()
                     .toolbar(.hidden)

@@ -23,6 +23,7 @@ struct ProjectsFeature{
     enum Action{
         case setNavigationPath([Project])
         case setProjectItems([Project])
+        case popNavigation
     }
     
     var body: some ReducerOf<Self> {
@@ -33,6 +34,11 @@ struct ProjectsFeature{
                     return .none
                 case .setProjectItems(let projectItems):
                     state.projectItems = projectItems
+                    return .none
+                case .popNavigation:
+                    if !state.navigationPath.isEmpty {
+                        state.navigationPath.removeLast()
+                    }
                     return .none
             }
         }

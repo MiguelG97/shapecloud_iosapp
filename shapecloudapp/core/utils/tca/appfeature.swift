@@ -11,17 +11,19 @@ import ComposableArchitecture
 struct AppFeature {
     //If we want views to update UI base on changes on this state, we need to observe it! (it's like a @state)
     @ObservableState
-    struct State{
-        var projects = ProjectsFeature.State()
+    struct State: Equatable{
         var selectedTab : STab = .projects
         var areBarsHidden : Bool = false
-        var isNestedView : Bool = false
+        
+        var projects = ProjectsFeature.State()
     }
     
     enum Action{
-        case projects(ProjectsFeature.Action)
         case setSelectedTab(STab)
         case setAreBarsHidden(Bool)
+        
+        case projects(ProjectsFeature.Action)
+        case popNavigation
     }
     
     var body: some ReducerOf<Self>{
@@ -39,11 +41,14 @@ struct AppFeature {
                 case .setAreBarsHidden(let hidden):
                     state.areBarsHidden = hidden
                     return .none
-            case .projects(.setNavigationPath(let path)):
-                    state.isNestedView = path.count > 0
+                case .projects(_):
                     return .none
-            case .projects(_):
-                return .none
+                case .popNavigation:
+                    //depending on the selected tab I should send an asynchronous action
+//                    switch state.selectedTab:
+//                        case .projects:
+//                            return .send(.projects(.popNavigation))
+                    return .send(.projects(.popNavigation))
             }
         }
     }
