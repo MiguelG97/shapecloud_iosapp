@@ -62,8 +62,13 @@ struct SProjectItem: View {
         }
         .padding(4)
         .background {
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.theme.foreground_muted,lineWidth: 0.6)
+            GeometryReader { proxy in
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color.theme.foreground_muted,lineWidth: 0.6)
+//                    .onAppear {
+//                        print(proxy.size.height)
+//                    }
+            }
         }
     }
 }

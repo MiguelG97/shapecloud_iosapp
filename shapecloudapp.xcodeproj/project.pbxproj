@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2418BFA82D63CC260095772B /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 2418BFA72D63CC260095772B /* ComposableArchitecture */; };
+		2490E91D2D6C28DF00CB1651 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 2490E91C2D6C28DF00CB1651 /* SwiftUIIntrospect */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2418BFA82D63CC260095772B /* ComposableArchitecture in Frameworks */,
+				2490E91D2D6C28DF00CB1651 /* SwiftUIIntrospect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +133,7 @@
 			name = shapecloudapp;
 			packageProductDependencies = (
 				2418BFA72D63CC260095772B /* ComposableArchitecture */,
+				2490E91C2D6C28DF00CB1651 /* SwiftUIIntrospect */,
 			);
 			productName = shapecloudapp;
 			productReference = 247011A52D502896004638FA /* shapecloudapp.app */;
@@ -216,6 +219,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				2418BFA62D63CC260095772B /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				2490E91B2D6C28DF00CB1651 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 247011A62D502896004638FA /* Products */;
@@ -608,6 +612,14 @@
 				minimumVersion = 1.17.1;
 			};
 		};
+		2490E91B2D6C28DF00CB1651 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -615,6 +627,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2418BFA62D63CC260095772B /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
+		};
+		2490E91C2D6C28DF00CB1651 /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2490E91B2D6C28DF00CB1651 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = SwiftUIIntrospect;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

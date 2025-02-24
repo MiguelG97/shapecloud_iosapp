@@ -42,13 +42,8 @@ struct HomeScreen: View {
          
         ZStack(alignment:.bottom) {
             VStack {
-                
                 switch store.selectedTab {
                 case .projects:
-//                    let isProjectPathEmpty = store.projects.navigationPath.count == 0
-//                    if isProjectPathEmpty{
-//
-//                    }
                     Spacer()
                         .frame(maxWidth: .infinity,maxHeight: safeArea.top*0.8 + 50)
                     SProjectsScreen(store:store.scope(state: \.projects, action: \.projects),areBarsHidden: $store.areBarsHidden.sending(\.setAreBarsHidden))
