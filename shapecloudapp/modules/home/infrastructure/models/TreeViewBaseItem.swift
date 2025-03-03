@@ -5,7 +5,7 @@
 //  Created by Miguel Gutiérrez on 16/02/25.
 //
 
-struct TreeViewBaseItem: Codable {
+struct TreeViewBaseItem: Codable,Hashable,Equatable {
     var id: String
     var label: String
     var children: [TreeViewBaseItem]?

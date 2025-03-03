@@ -36,7 +36,7 @@ struct HomeScreen: View {
         }
     }
     
-    @State private var areBarsHidden: Bool = false
+    @State private var isBotTabBarHidden: Bool = false
     
     var body: some View {
          
@@ -46,7 +46,7 @@ struct HomeScreen: View {
                 case .projects:
                     Spacer()
                         .frame(maxWidth: .infinity,maxHeight: safeArea.top*0.8 + 50)
-                    SProjectsScreen(store:store.scope(state: \.projects, action: \.projects),areBarsHidden: $store.areBarsHidden.sending(\.setAreBarsHidden))
+                    SProjectsScreen(store:store.scope(state: \.projects, action: \.projects),isBotTabBarHidden: $store.isBotTabBarHidden.sending(\.setisBotTabBarHidden))
                 case .search:
                     VStack {
                         Color.red
@@ -65,7 +65,7 @@ struct HomeScreen: View {
             .padding(.bottom,20)
             .frame(maxWidth: .infinity,maxHeight: .infinity,alignment: .top)
             .overlay(alignment: .top) {
-                SNavBarView(title:"SHAPECLOUD",icon: Image(systemName: isNestedView ? "chevron.backward":"line.3.horizontal"),iconCallBack: {
+                SAppBarView(title:"SHAPECLOUD",icon: Image(systemName: isNestedView ? "chevron.backward":"line.3.horizontal"),iconCallBack: {
                     store.send(.popNavigation)
                 })
                 .offset(y: safeArea.top*0.8)
@@ -74,7 +74,7 @@ struct HomeScreen: View {
                     }
             }
             
-            SCustomTabBar(selectedTab: $store.selectedTab.sending(\.setSelectedTab),isBarHidden: store.areBarsHidden)
+            SBottomTabBar(selectedTab: $store.selectedTab.sending(\.setSelectedTab),isBarHidden: store.isBotTabBarHidden)
         }
         .ignoresSafeArea()
     }

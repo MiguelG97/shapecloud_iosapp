@@ -6,39 +6,65 @@
 //
 
 import SwiftUI
+import SwiftUIIntrospect
 
 struct SFoldersScreen: View {
-    @Binding var areBarsHidden: Bool
+    var project: Project
+    @Binding var isBotTabBarHidden: Bool
+    
+    @State private var selectedFolder : TreeViewBaseItem?
+    
+    init(project: Project, isBotTabBarHidden: Binding<Bool>) {
+        self.project = project
+        self._isBotTabBarHidden = isBotTabBarHidden
+        print("the folder selected: ", project.folderStructure?.first?.label ?? "")
+        _selectedFolder = State(initialValue: project.folderStructure?.first)
+    }
     
     var body: some View {
+        
         VStack(spacing:12){
-            SFolderBreadCumber()
-            
-            VStack(alignment:.leading,spacing: 0) {
-                Text("Folders")
-                    .font(.title2)
-                    .fontWeight(.bold)
+            SFolderBreadCumber(selectedFolder: $selectedFolder)
                 
-                ScrollView(.horizontal) {
-                    HStack(spacing:16) {
-                        ForEach(0..<10, id: \.self) { index in
-                            SFolderCard()
+            ScrollView{
+                LazyVStack(spacing:12,pinnedViews: .sectionHeaders){
+                    
+                    Section {
+                        ScrollView(.horizontal) {
+                            HStack(spacing:14) {
+                                ForEach(selectedFolder?.children ?? [], id: \.self) { folder in
+                                    Button{
+                                        if selectedFolder?.id != folder.id{
+                                            selectedFolder = folder
+                                        }
+                                    }label: {
+                                        SFolderCard(folderItem: folder)
+                                            .padding(.vertical,1)
+                                    }
+                                }
+                            }.padding(.leading,1)
                         }
+                        .scrollIndicators(.hidden)
+                    } header: {
+                        Text("Folders")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .padding(.bottom,4)
+                            .frame(maxWidth: .infinity,alignment: .leading)
+                            .background{Color.white}
                     }
-                }
-                
-            }
-            VStack(alignment:.leading) {
-                Text("Files")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                
-                ScrollView {
-                    VStack {
-                        
-                        ForEach(0..<10, id: \.self) { index in
-                            SFileItem()
+
+                    Section {
+                        ForEach(selectedFolder?.files ?? [], id: \.self) { file in
+                            SFileItem(file: file)
                         }
+                    } header: {
+                        Text("Files")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .padding(.bottom,4)
+                            .frame(maxWidth: .infinity,alignment: .leading)
+                            .background{Color.white}
                     }
                 }
             }
@@ -47,20 +73,26 @@ struct SFoldersScreen: View {
         .padding(.horizontal, SScreenSize.hPadding)
         .onAppear {
             withAnimation(.easeInOut(duration: 0.5)) {
-                areBarsHidden = true
+                isBotTabBarHidden = true
             }
         }
         .onDisappear {
             withAnimation(.easeInOut(duration: 0.5)) {
-                areBarsHidden = false
+                isBotTabBarHidden = false
             }
         }
+        .buttonStyle(.plain)
         
     }
 }
 
 #Preview {
-    SFoldersScreen(areBarsHidden: .constant(false))
+    SFoldersScreen(project: Project(name: "Huascar 203", location: "Perú",folderStructure: [
+        TreeViewBaseItem(id: "1", label: "MEP",children:[
+            TreeViewBaseItem(id: "1-1", label: "Struc"),
+            TreeViewBaseItem(id: "1-2", label: "Struc x2"),
+        ]),
+    ], companyId: "asdd1"),isBotTabBarHidden: .constant(false))
         .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
         .environment(\.screenSize, CGSize(width: 402, height: 874))
         .environment(\.safeArea, EdgeInsets(top: 62, leading: 0, bottom: 34, trailing: 0))

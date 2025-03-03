@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SProjectItem: View {
+    var project : Project
     var body: some View {
         VStack(alignment:.leading) {
             VStack(alignment:.leading) {
@@ -16,9 +17,9 @@ struct SProjectItem: View {
                         .frame(width: 50,height: 50)
                     
                     VStack(alignment:.leading) {
-                        Text("Huascar 320")
+                        Text(project.name)
                             .fontWeight(.semibold)
-                        Text("Lima")
+                        Text(project.location)
                             .foregroundStyle(Color.theme.foreground.opacity(0.5))
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -74,7 +75,7 @@ struct SProjectItem: View {
 }
 
 #Preview {
-    SProjectItem().environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
+    SProjectItem(project: Project(name: "Huascar 304", location: "Lima",companyId: "unimongo")).environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
         .environment(\.screenSize, CGSize(width: 402, height: 874))
         .environment(\.safeArea, EdgeInsets(top: 62, leading: 0, bottom: 34, trailing: 0))
 }

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SFileItem: View {
+    var file : TreeFile
+    
     var body: some View {
         HStack {
             Image(systemName: "document.fill")
@@ -17,7 +19,7 @@ struct SFileItem: View {
                 .padding(8)
                 .frame(width: 50,height: 50)
             VStack(alignment:.leading) {
-                Text("Huascar 3025 - Arch ")
+                Text(file.name)
                     .fontWeight(.semibold)
                 Text("7/14/22")
                     .foregroundStyle(Color.theme.foreground_muted)
@@ -31,5 +33,5 @@ struct SFileItem: View {
 }
 
 #Preview {
-    SFileItem()
+    SFileItem(file: TreeFile(id: "1-4", name: "Boulevard Asia.rvt",extName: .rvt, size: 39002.22))
 }

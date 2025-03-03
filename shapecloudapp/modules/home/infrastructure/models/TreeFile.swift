@@ -16,15 +16,15 @@ enum ExtensionNameFiles: String, Codable {
     case nwd
 }
 
-struct TreeFile: Codable {
+struct TreeFile: Codable,Equatable,Hashable {
     var id: String
-   var name: String
+    var name: String
     var size: Double? // Size in MB
-   var modifiedOn: Date?
-   var extName: ExtensionNameFiles
-   var link: String?
-   var urn: String?
-   var isViewable: Bool? = false
+    var modifiedOn: Date?
+    var extName: ExtensionNameFiles
+    var link: String?
+    var urn: String?
+    var isViewable: Bool? = false
     init(id: String, name: String, extName: ExtensionNameFiles, size: Double? = nil, modifiedOn: Date? = nil, link: String? = nil, urn: String? = nil, isViewable: Bool? = false) {
             self.id = id
             self.name = name

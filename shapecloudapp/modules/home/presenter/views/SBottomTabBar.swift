@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SCustomTabBar: View {
+struct SBottomTabBar: View {
     @Environment(\.screenSize) private var screenSize: CGSize
     @Binding var selectedTab: STab
     
@@ -102,7 +102,7 @@ struct SCustomTabBar: View {
 }
 
 #Preview {
-    SCustomTabBar(selectedTab: .constant(.projects))
+    SBottomTabBar(selectedTab: .constant(.projects))
         .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
         .environment(\.screenSize, CGSize(width: 402, height: 874))
 }

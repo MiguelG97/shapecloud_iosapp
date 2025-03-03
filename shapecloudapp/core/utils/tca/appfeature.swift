@@ -13,14 +13,14 @@ struct AppFeature {
     @ObservableState
     struct State: Equatable{
         var selectedTab : STab = .projects
-        var areBarsHidden : Bool = false
+        var isBotTabBarHidden : Bool = false
         
         var projects = ProjectsFeature.State()
     }
     
     enum Action{
         case setSelectedTab(STab)
-        case setAreBarsHidden(Bool)
+        case setisBotTabBarHidden(Bool)
         
         case projects(ProjectsFeature.Action)
         case popNavigation
@@ -38,8 +38,8 @@ struct AppFeature {
                 case .setSelectedTab(let tab):
                     state.selectedTab = tab
                     return .none
-                case .setAreBarsHidden(let hidden):
-                    state.areBarsHidden = hidden
+                case .setisBotTabBarHidden(let hidden):
+                    state.isBotTabBarHidden = hidden
                     return .none
                 case .projects(_):
                     return .none

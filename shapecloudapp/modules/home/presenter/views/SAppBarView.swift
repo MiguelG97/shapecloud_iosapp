@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SNavBarView<Icon:View>: View {
+struct SAppBarView<Icon:View>: View {
     
     var title: String = "SHAPECLOUD"
     var icon: Icon
@@ -49,6 +49,6 @@ struct SNavBarView<Icon:View>: View {
 }
 
 #Preview {
-    SNavBarView(icon:Image(systemName: "line.3.horizontal"))
+    SAppBarView(icon:Image(systemName: "line.3.horizontal"))
         .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
 }

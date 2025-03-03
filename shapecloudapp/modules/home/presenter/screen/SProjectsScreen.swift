@@ -14,7 +14,7 @@ struct SProjectsScreen: View {
     
     @State private var searchText: String = ""
     @State private var lastScrollOffset: CGFloat = 0
-    @Binding var areBarsHidden: Bool
+    @Binding var isBotTabBarHidden: Bool
 //    @State private var contentHeight: CGFloat = 0
     private var contentHeight: Double {
         Double(store.projectItems.count) * 147.0 + Double(min(store.projectItems.count - 1, 0))*16.0
@@ -49,12 +49,12 @@ struct SProjectsScreen: View {
                         
                         if topLeftOffset < lastScrollOffset && abs(topLeftOffset - lastScrollOffset)>1 {
                             withAnimation(.easeInOut(duration: 0.5)) {
-                                    areBarsHidden = true
+                                    isBotTabBarHidden = true
                                 }
                         }
                         else if topLeftOffset > lastScrollOffset && abs(topLeftOffset - lastScrollOffset)>1 {
                             withAnimation(.easeInOut(duration: 0.5)) {
-                                areBarsHidden = false
+                                isBotTabBarHidden = false
                             }
                         }
                         lastScrollOffset = topLeftOffset
@@ -65,17 +65,17 @@ struct SProjectsScreen: View {
                 VStack(spacing:16) {
                     ForEach(store.projectItems,id:\.companyId) { projectItem in
                         NavigationLink(value: projectItem) {
-                            SProjectItem()
+                            SProjectItem(project: projectItem)
                                 .foregroundStyle(Color.theme.foreground)
                         }
                     }
                 }
             }
             .navigationDestination(for: Project.self) { project in
-                SFoldersScreen(areBarsHidden: $areBarsHidden)
+                SFoldersScreen(project:project,isBotTabBarHidden: $isBotTabBarHidden)
                     .toolbar(.hidden)
             }
-            .padding(.top,areBarsHidden ? 0 : 130)
+            .padding(.top,isBotTabBarHidden ? 0 : 130)
             .overlay(alignment: .top) {
                 VStack(spacing:16) {
                     HStack {
@@ -107,7 +107,7 @@ struct SProjectsScreen: View {
                         }
                     }
                 }
-                .offset(y: areBarsHidden ? -130 : 0)
+                .offset(y: isBotTabBarHidden ? -130 : 0)
                 .padding(.top,8)
             }
             .padding(.horizontal,SScreenSize.hPadding)
@@ -121,7 +121,7 @@ struct SProjectsScreen: View {
 #Preview {
     SProjectsScreen(store:Store(initialState: ProjectsFeature.State(), reducer: {
         ProjectsFeature()
-    }),areBarsHidden: .constant(false))
+    }),isBotTabBarHidden: .constant(false))
         .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
         .environment(\.screenSize, CGSize(width: 402, height: 874))
         .environment(\.safeArea, EdgeInsets(top: 62, leading: 0, bottom: 34, trailing: 0))

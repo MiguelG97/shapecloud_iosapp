@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct SFolderCard: View {
+    var folderItem : TreeViewBaseItem
     
     @Environment(\.screenSize) var screenSize: CGSize;
     private var widthCard: Double {
-        screenSize.width * 0.5 - SScreenSize.hPadding - 8
+        screenSize.width * 0.5 - SScreenSize.hPadding - 10
     }
     private var heightCard: Double {
         0.8 * widthCard
@@ -34,7 +35,7 @@ struct SFolderCard: View {
                 }
             }
             Spacer()
-            Text("Architecture")
+            Text(folderItem.label)
                 .fontWeight(.bold)
                 .frame(maxWidth:.infinity,alignment:.leading)
             Spacer()
@@ -49,13 +50,14 @@ struct SFolderCard: View {
         .padding(.vertical,20)
         .frame(width: widthCard, height: heightCard)
         .background {
-            Color.white
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.theme.border,lineWidth: 2)
         }
     }
 }
 
 #Preview {
-    SFolderCard()
+    SFolderCard(folderItem: TreeViewBaseItem(id: "1", label: "Architecture"))
         .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
         .environment(\.screenSize, CGSize(width: 402, height: 874))
 }

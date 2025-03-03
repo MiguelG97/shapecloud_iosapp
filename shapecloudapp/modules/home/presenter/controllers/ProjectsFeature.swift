@@ -12,7 +12,12 @@ struct ProjectsFeature{
     struct State: Equatable{
         var navigationPath : [Project] = []
         var projectItems : [Project] = [
-            Project(name: "Project 1", location: "Description 1",companyId: "1"),
+            Project(name: "Huascar 203", location: "Perú",folderStructure: [
+                TreeViewBaseItem(id: "1", label: "MEP",children: [
+                    TreeViewBaseItem(id: "1-1", label: "Rvt models", children: [], files: [TreeFile(id: "UNIDAA123", name: "Asia Boulevard", extName: .rvt)]),
+                    TreeViewBaseItem(id: "1-2", label: "Nws models", children: [], files: [TreeFile(id: "Rvt245", name: "Asia Navis", extName: .nwd)])
+                ],files: [TreeFile(id: "some", name: "Harass 123", extName: .rvt)])
+            ], companyId: "asdd1"),
                Project(name: "Project 2", location: "Description 2",companyId: "2"),
                Project(name: "Project 3", location: "Description 3",companyId: "3"),
                Project(name: "Project 4", location: "Description 4",companyId: "4"),
