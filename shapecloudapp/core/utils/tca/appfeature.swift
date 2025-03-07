@@ -16,6 +16,7 @@ struct AppFeature {
         var isBotTabBarHidden : Bool = false
         
         var projects = ProjectsFeature.State()
+        var auth = AuthFeature.State()
     }
     
     enum Action{
@@ -23,6 +24,7 @@ struct AppFeature {
         case setisBotTabBarHidden(Bool)
         
         case projects(ProjectsFeature.Action)
+        case auth(AuthFeature.Action)
         case popNavigation
     }
     
@@ -31,6 +33,9 @@ struct AppFeature {
         //Scope reducer: It helps to compose the other features logic to not repeat that code again! (it runs a child reducer on this domain)
         Scope(state: \.projects, action: \.projects) {
             ProjectsFeature()
+        }
+        Scope(state: \.auth, action: \.auth) {
+            AuthFeature()
         }
         
         Reduce { state, action in
@@ -42,6 +47,8 @@ struct AppFeature {
                     state.isBotTabBarHidden = hidden
                     return .none
                 case .projects(_):
+                    return .none
+                case .auth(_):
                     return .none
                 case .popNavigation:
                     //depending on the selected tab I should send an asynchronous action

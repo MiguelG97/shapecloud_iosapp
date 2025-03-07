@@ -7,9 +7,10 @@
 
 import SwiftUI
 import WebKit
+import ComposableArchitecture
 
 struct LandScreen: View {
-    
+    var store : StoreOf<AuthFeature>
     var videoURL : URL = URL(string: "https://www.youtube.com/embed/todiSVFQOjU?autohide=1&modestbranding=1&controls=1&rel=0&fs=0")!
     @Environment(\.screenSize) private var screenSize
     
@@ -18,11 +19,12 @@ struct LandScreen: View {
         let offset = 40.0
         let height = screenSize.height - offset
         
-        ZStack {
+        NavigationStack{
             VStack(spacing:0){
                 Spacer()
                 .frame(maxWidth: .infinity,maxHeight: offset)
                 
+//                title
                 VStack {
                     HStack(alignment:.center,spacing:10){
                         Text("shapecloud")
@@ -47,12 +49,14 @@ struct LandScreen: View {
                 }
                 .frame(maxWidth: .infinity,maxHeight: 0.35*height,alignment: .center)
                 
+//                webview
                 VStack {
                     SWebView(url: videoURL)
                         .frame(maxWidth: .infinity,maxHeight: 0.35*height)
                 }
                 .frame(maxWidth: .infinity)
 
+//                buttons
                 VStack(spacing:20){
                     Button {
                         
@@ -61,29 +65,26 @@ struct LandScreen: View {
                             .fontWeight(.semibold)
                     }
                     .frame(maxWidth: .infinity,maxHeight: 50)
-                    .border(Color.black, width: 2)
+                    .background(RoundedRectangle(cornerRadius: 25).stroke(Color.black,lineWidth: 2))
                     
-                    
-                    Button {
-                        
+                    NavigationLink {
+                        LoginScreen(store: store)
                     } label: {
                         Text("Sign In").foregroundStyle(.white)
-                            
-                    }
-                    .frame(maxWidth: .infinity,maxHeight: 50)
-                    .background(Color.theme.primary)
+                    }.frame(maxWidth: .infinity,maxHeight: 50)
+                        .background(RoundedRectangle(cornerRadius: 25).fill(Color.theme.primary))
+                    
                 }
                 .font(.headline)
                 .frame(maxWidth: .infinity,maxHeight: 0.3*height)
             }
             .padding(.horizontal, 32)
-        }
-        .ignoresSafeArea(.all)
+        }.ignoresSafeArea(.all)
     }
 }
 
 #Preview {
-    LandScreen()
+    LandScreen(store:Sstore.scope(state: \.auth, action: \.auth))
         .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
         .environment(\.screenSize, CGSize(width: 402, height: 874))
 }

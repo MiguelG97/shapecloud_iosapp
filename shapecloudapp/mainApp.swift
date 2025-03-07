@@ -13,13 +13,25 @@ struct MainApp: App {
         
         WindowGroup {
             GeometryReader { proxy in
-                HomeScreen(store: Sstore)
+                
+                if Sstore.auth.user == nil{
+                    LandScreen(store:Sstore.scope(state: \.auth, action: \.auth))
                     .environment(\.screenSize, proxy.size)
                     .environment(\.safeArea, proxy.safeAreaInsets)
                     .onAppear {
                         print(proxy.safeAreaInsets.top,proxy.safeAreaInsets.bottom,
                               proxy.size.height)
                     }
+                }
+                else {
+                    HomeScreen(store: Sstore)
+                    .environment(\.screenSize, proxy.size)
+                    .environment(\.safeArea, proxy.safeAreaInsets)
+                    .onAppear {
+                        print(proxy.safeAreaInsets.top,proxy.safeAreaInsets.bottom,
+                              proxy.size.height)
+                    }
+                }
             }
             
         }
