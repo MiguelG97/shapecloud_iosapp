@@ -21,6 +21,10 @@ struct Project:Hashable, Codable, Equatable {
         self.companyId = companyId
     }
     
+    enum CodingKeys: String, CodingKey {
+        case name, location, folderStructure, createdOn, companyId
+    }
+    
     static func == (lhs: Project, rhs: Project) -> Bool {
         return lhs.name == rhs.name &&
                lhs.location == rhs.location &&

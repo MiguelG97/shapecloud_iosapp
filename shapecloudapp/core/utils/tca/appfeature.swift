@@ -14,6 +14,7 @@ struct AppFeature {
     struct State: Equatable{
         var selectedTab : STab = .projects
         var isBotTabBarHidden : Bool = false
+        var isLaunchScreenVisible : Bool = true
         
         var projects = ProjectsFeature.State()
         var auth = AuthFeature.State()
@@ -22,6 +23,7 @@ struct AppFeature {
     enum Action{
         case setSelectedTab(STab)
         case setisBotTabBarHidden(Bool)
+        case setLaunchScreenVisibility(Bool)
         
         case projects(ProjectsFeature.Action)
         case auth(AuthFeature.Action)
@@ -45,6 +47,9 @@ struct AppFeature {
                     return .none
                 case .setisBotTabBarHidden(let hidden):
                     state.isBotTabBarHidden = hidden
+                    return .none
+                case .setLaunchScreenVisibility(let visibility):
+                    state.isLaunchScreenVisible = visibility
                     return .none
                 case .projects(_):
                     return .none

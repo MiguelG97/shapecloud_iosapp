@@ -21,20 +21,20 @@ class AuthService {
         let (data,response) = try await URLSession.shared.data(for: request)
         let httpResponse = response as? HTTPURLResponse
         
+        print("reading data: ", String(data:data,encoding: .utf8) ?? "Nothing")
+        let responseDto : ResponseDto<LoginResponseDto> = try JSONDecoder().decode(ResponseDto<LoginResponseDto>.self, from: data)
+        
         guard (200..<300).contains(httpResponse?.statusCode ?? 500) else {
-            throw NSError(domain: "AuthService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])
+            throw NSError(domain:responseDto.error?.name ?? "AuthService", code: -1, userInfo: [NSLocalizedDescriptionKey:responseDto.error?.message ?? "Invalid response"])
         }
         
-//        print("reading data: ", String(data:data,encoding: .utf8) ?? "Nothing")
-        
-        let respondeDto : ResponseDto<LoginResponseDto> = try JSONDecoder().decode(ResponseDto<LoginResponseDto>.self, from: data)
-        
-        guard respondeDto.success else{
-            throw NSError(domain: "AuthService", code: respondeDto.statusCode, userInfo: [NSLocalizedDescriptionKey : respondeDto.error?.message ?? "Unexpected Error"])
+        guard responseDto.success else{
+            throw NSError(domain:responseDto.error?.name ?? "AuthService", code: responseDto.statusCode, userInfo: [NSLocalizedDescriptionKey : responseDto.error?.message ?? "Unexpected Error"])
         }
         
-        TokenManager.saveToken(respondeDto.data.token)
+        print(responseDto.data?.token ?? "")
+        TokenManager.saveToken(responseDto.data?.token ?? "")
         
-        return respondeDto
+        return responseDto
     }
 }

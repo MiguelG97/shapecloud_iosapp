@@ -6,7 +6,7 @@
 //
 
 struct ResponseDto<T:Codable>:Codable {
-    var data : T
+    var data : T?
     var success: Bool
     var error: ErrorResponse?
     var statusCode: Int
@@ -15,4 +15,8 @@ struct ResponseDto<T:Codable>:Codable {
 struct ErrorResponse: Codable {
     var name : String?
     var message : String?
+}
+
+struct EmptyResponse : Codable {
+    
 }

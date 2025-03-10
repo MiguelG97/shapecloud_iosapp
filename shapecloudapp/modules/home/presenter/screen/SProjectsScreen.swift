@@ -17,7 +17,7 @@ struct SProjectsScreen: View {
     @Binding var isBotTabBarHidden: Bool
 //    @State private var contentHeight: CGFloat = 0
     private var contentHeight: Double {
-        Double(store.projectItems.count) * 147.0 + Double(min(store.projectItems.count - 1, 0))*16.0
+        Double(store.projects.count) * 147.0 + Double(min(store.projects.count - 1, 0))*16.0
     }
     @Environment(\.safeArea) private var safeArea: EdgeInsets
     @Environment(\.screenSize) private var screenSize: CGSize
@@ -63,7 +63,7 @@ struct SProjectsScreen: View {
                 }.frame(height: 0)
                 
                 VStack(spacing:16) {
-                    ForEach(store.projectItems,id:\.companyId) { projectItem in
+                    ForEach(store.projects,id:\.companyId) { projectItem in
                         NavigationLink(value: projectItem) {
                             SProjectItem(project: projectItem)
                                 .foregroundStyle(Color.theme.foreground)
@@ -113,6 +113,18 @@ struct SProjectsScreen: View {
             .padding(.horizontal,SScreenSize.hPadding)
             .introspect(.scrollView, on: .iOS(.v14,.v15,.v16,.v17,.v18)) { scrollview in
                 scrollview.bounces = false
+            }
+            .onAppear {
+                //not on appear but do it only once or on pull to refresh!
+                Task {
+                    do {
+                        let projectsData = try await ProjectService.Shared.getProjects()
+                        store.send(.setProjects(projectsData))
+                    }
+                    catch{
+                        print("error found: ",error.localizedDescription)
+                    }
+                }
             }
         }
     }

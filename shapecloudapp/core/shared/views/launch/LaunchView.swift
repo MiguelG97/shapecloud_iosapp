@@ -6,27 +6,32 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
+import Dispatch
 
 struct LaunchView: View {
-    
+    var store : StoreOf<AppFeature>
     var body: some View {
         
-        GeometryReader { proxy in
-            ZStack {
-                Image(SImages.shared.launchView)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                Text("SHAPECLOUDAPP").foregroundStyle(.white)
-                    .font(.system(size: 32))
-                    .fontWeight(.semibold)
-                LoaderView().offset(x: 0, y: 100)
-                
+        ZStack {
+            Image(SImages.shared.launchView)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+            Text("SHAPECLOUDAPP").foregroundStyle(.white)
+                .font(.system(size: 32))
+                .fontWeight(.semibold)
+            LoaderView().offset(x: 0, y: 100)
+            
+        }
+        .ignoresSafeArea(edges: .all)
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+                store.send(.setLaunchScreenVisibility(false))
             }
-            .ignoresSafeArea(edges: .all)
         }
     }
 }
 
 #Preview {
-    LaunchView().environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 14))
+    LaunchView(store: Sstore).environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 14))
 }

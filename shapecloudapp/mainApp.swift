@@ -13,28 +13,26 @@ struct MainApp: App {
         
         WindowGroup {
             GeometryReader { proxy in
-                
-                if Sstore.auth.user == nil{
-                    LandScreen(store:Sstore.scope(state: \.auth, action: \.auth))
-                    .environment(\.screenSize, proxy.size)
-                    .environment(\.safeArea, proxy.safeAreaInsets)
-                    .onAppear {
-                        print(proxy.safeAreaInsets.top,proxy.safeAreaInsets.bottom,
-                              proxy.size.height)
+                Group {
+                    if Sstore.auth.user == nil, Sstore.isLaunchScreenVisible{
+                        LaunchView(store: Sstore)
                     }
+                    else if Sstore.auth.user == nil, !Sstore.isLaunchScreenVisible {
+                        LandScreen(store:Sstore.scope(state: \.auth, action: \.auth))
+                    }
+                    else {
+                        HomeScreen(store: Sstore)
+                    }
+                    
                 }
-                else {
-                    HomeScreen(store: Sstore)
-                    .environment(\.screenSize, proxy.size)
-                    .environment(\.safeArea, proxy.safeAreaInsets)
-                    .onAppear {
-                        print(proxy.safeAreaInsets.top,proxy.safeAreaInsets.bottom,
-                              proxy.size.height)
-                    }
+                .environment(\.screenSize, proxy.size)
+                .environment(\.safeArea, proxy.safeAreaInsets)
+                .onAppear {
+                    print(proxy.safeAreaInsets.top,proxy.safeAreaInsets.bottom,
+                          proxy.size.height)
                 }
             }
-            
-        }
-        .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
+        }.environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
     }
 }
+

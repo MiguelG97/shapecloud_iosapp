@@ -61,19 +61,22 @@ struct LandScreen: View {
                     Button {
                         
                     } label: {
-                        Text("Subscribe now").foregroundStyle(.black)
+                        Text("Subscribe now")
+                            .foregroundStyle(.black)
                             .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity,maxHeight: 50)
+                            .background(RoundedRectangle(cornerRadius: 25).stroke(Color.black,lineWidth: 2))
                     }
-                    .frame(maxWidth: .infinity,maxHeight: 50)
-                    .background(RoundedRectangle(cornerRadius: 25).stroke(Color.black,lineWidth: 2))
+                    
                     
                     NavigationLink {
                         LoginScreen(store: store)
                     } label: {
-                        Text("Sign In").foregroundStyle(.white)
-                    }.frame(maxWidth: .infinity,maxHeight: 50)
-                        .background(RoundedRectangle(cornerRadius: 25).fill(Color.theme.primary))
-                    
+                        Text("Sign In")
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity,maxHeight: 50)
+                                .background(RoundedRectangle(cornerRadius: 25).fill(Color.theme.primary))
+                    }
                 }
                 .font(.headline)
                 .frame(maxWidth: .infinity,maxHeight: 0.3*height)

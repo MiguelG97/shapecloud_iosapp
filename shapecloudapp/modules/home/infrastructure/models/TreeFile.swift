@@ -7,13 +7,13 @@
 import Foundation
 
 enum ExtensionNameFiles: String, Codable {
-    case folder
-    case rvt
-    case pdf
+    case folder = "folder"
+    case rvt = "rvt"
+    case pdf = "pdf"
     
-    case dwg
-    case dxf
-    case nwd
+    case dwg = "dwg"
+    case dxf = "dxf"
+    case nwd = "nwd"
 }
 
 struct TreeFile: Codable,Equatable,Hashable {

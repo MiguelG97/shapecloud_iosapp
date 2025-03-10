@@ -44,7 +44,8 @@ struct LoginScreen: View {
                             guard responseDto.success else{
                                 throw NSError(domain: responseDto.error?.name ?? "Server Error", code: responseDto.statusCode, userInfo: [NSLocalizedDescriptionKey: responseDto.error?.message! ?? "Unexpected Error"])
                             }
-                            store.send(.setUser(responseDto.data.user))
+                            store.send(.setUser(responseDto.data!.user))
+//                            store.send(.setUser(User(_id: "12", name: "Miguel", email: "mgutierrez", role: .user, companyId: "2314")))
                         }
                         catch {
                             print(error.localizedDescription)

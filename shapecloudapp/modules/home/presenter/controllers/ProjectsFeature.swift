@@ -11,7 +11,7 @@ struct ProjectsFeature{
     @ObservableState
     struct State: Equatable{
         var navigationPath : [Project] = []
-        var projectItems : [Project] = [
+        var projects : [Project] = [
             Project(name: "Huascar 203", location: "Perú",folderStructure: [
                 TreeViewBaseItem(id: "1", label: "MEP",children: [
                     TreeViewBaseItem(id: "1-1", label: "Rvt models", children: [], files: [TreeFile(id: "UNIDAA123", name: "Asia Boulevard", extName: .rvt)]),
@@ -27,7 +27,7 @@ struct ProjectsFeature{
     }
     enum Action{
         case setNavigationPath([Project])
-        case setProjectItems([Project])
+        case setProjects([Project])
         case popNavigation
     }
     
@@ -37,8 +37,8 @@ struct ProjectsFeature{
                 case .setNavigationPath(let navigationPath):
                     state.navigationPath = navigationPath
                     return .none
-                case .setProjectItems(let projectItems):
-                    state.projectItems = projectItems
+                case .setProjects(let projects):
+                    state.projects = projects
                     return .none
                 case .popNavigation:
                     if !state.navigationPath.isEmpty {
