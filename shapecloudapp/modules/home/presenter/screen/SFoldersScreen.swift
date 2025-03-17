@@ -10,21 +10,23 @@ import SwiftUIIntrospect
 
 struct SFoldersScreen: View {
     var project: Project
+    
     @Binding var isBotTabBarHidden: Bool
     
-    @State private var selectedFolder : TreeViewBaseItem?
+    @State private var selectedFolder : TreeViewBaseItem
     
     init(project: Project, isBotTabBarHidden: Binding<Bool>) {
         self.project = project
         self._isBotTabBarHidden = isBotTabBarHidden
-        print("the folder selected: ", project.folderStructure?.first?.label ?? "")
-        _selectedFolder = State(initialValue: project.folderStructure?.first)
+        
+        _selectedFolder = State(initialValue: project.folderStructure.first!)
     }
     
     var body: some View {
         
         VStack(spacing:12){
-            SFolderBreadCumber(selectedFolder: $selectedFolder)
+            //I dont like it here, maybe it should be within the folder section, not outside!
+            SFolderBreadCumber(selectedFolder: $selectedFolder,folderStructure: project.folderStructure )
                 
             ScrollView{
                 LazyVStack(spacing:12,pinnedViews: .sectionHeaders){
@@ -32,15 +34,15 @@ struct SFoldersScreen: View {
                     Section {
                         ScrollView(.horizontal) {
                             HStack(spacing:14) {
-                                ForEach(selectedFolder?.children ?? [], id: \.self) { folder in
-                                    Button{
-                                        if selectedFolder?.id != folder.id{
-                                            selectedFolder = folder
+                                ForEach(selectedFolder.children ?? [], id: \.self) { folder in
+                                    
+                                    SFolderCard(folderItem: folder)
+                                        .padding(.vertical,1)
+                                        .onTapGesture {
+                                            if selectedFolder.id != folder.id{
+                                                selectedFolder = folder
+                                            }
                                         }
-                                    }label: {
-                                        SFolderCard(folderItem: folder)
-                                            .padding(.vertical,1)
-                                    }
                                 }
                             }.padding(.leading,1)
                         }
@@ -55,7 +57,7 @@ struct SFoldersScreen: View {
                     }
 
                     Section {
-                        ForEach(selectedFolder?.files ?? [], id: \.self) { file in
+                        ForEach(selectedFolder.files ?? [], id: \.self) { file in
                             SFileItem(file: file)
                         }
                     } header: {
@@ -87,7 +89,7 @@ struct SFoldersScreen: View {
 }
 
 #Preview {
-    SFoldersScreen(project: Project(name: "Huascar 203", location: "Perú",folderStructure: [
+    SFoldersScreen(project: Project(id: "123", name: "Huascar 203", location: "Perú",folderStructure: [
         TreeViewBaseItem(id: "1", label: "MEP",children:[
             TreeViewBaseItem(id: "1-1", label: "Struc"),
             TreeViewBaseItem(id: "1-2", label: "Struc x2"),

@@ -75,7 +75,7 @@ struct SProjectItem: View {
 }
 
 #Preview {
-    SProjectItem(project: Project(name: "Huascar 304", location: "Lima",companyId: "unimongo")).environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
+    SProjectItem(project: Project(id: "123",name: "Huascar 304", location: "Lima",folderStructure: [defaultFolder],companyId: "unimongo")).environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
         .environment(\.screenSize, CGSize(width: 402, height: 874))
         .environment(\.safeArea, EdgeInsets(top: 62, leading: 0, bottom: 34, trailing: 0))
 }

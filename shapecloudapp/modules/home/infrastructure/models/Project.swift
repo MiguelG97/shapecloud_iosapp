@@ -7,13 +7,15 @@
 import Foundation
 
 struct Project:Hashable, Codable, Equatable {
+    var _id: String;
     var name: String
     var location: String
-    var folderStructure: [TreeViewBaseItem]?
+    var folderStructure: [TreeViewBaseItem]
     var createdOn: Date?
     var companyId: String
     
-    init(name: String, location: String, createdOn: Date? = nil, folderStructure: [TreeViewBaseItem]? = nil, companyId: String) {
+    init(id: String, name: String, location: String, createdOn: Date? = nil, folderStructure: [TreeViewBaseItem] , companyId: String) {
+        self._id = id
         self.name = name
         self.location = location
         self.createdOn = createdOn ?? Date().addingTimeInterval(7 * 24 * 60 * 60) // default to 7 days later
@@ -22,16 +24,18 @@ struct Project:Hashable, Codable, Equatable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case name, location, folderStructure, createdOn, companyId
+        case _id, name, location, folderStructure, createdOn, companyId
     }
     
     static func == (lhs: Project, rhs: Project) -> Bool {
-        return lhs.name == rhs.name &&
+        return lhs._id == rhs._id &&
+               lhs.name == rhs.name &&
                lhs.location == rhs.location &&
                lhs.companyId == rhs.companyId &&
                lhs.createdOn == rhs.createdOn
     }
     func hash(into hasher: inout Hasher) {
+            hasher.combine(_id)
             hasher.combine(name)
             hasher.combine(location)
             hasher.combine(companyId)

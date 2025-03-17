@@ -63,7 +63,7 @@ struct SProjectsScreen: View {
                 }.frame(height: 0)
                 
                 VStack(spacing:16) {
-                    ForEach(store.projects,id:\.companyId) { projectItem in
+                    ForEach(store.projects,id:\._id) { projectItem in
                         NavigationLink(value: projectItem) {
                             SProjectItem(project: projectItem)
                                 .foregroundStyle(Color.theme.foreground)
@@ -112,12 +112,13 @@ struct SProjectsScreen: View {
             }
             .padding(.horizontal,SScreenSize.hPadding)
             .introspect(.scrollView, on: .iOS(.v14,.v15,.v16,.v17,.v18)) { scrollview in
-                scrollview.bounces = false
+                scrollview.bounces = true
             }
             .onAppear {
                 //not on appear but do it only once or on pull to refresh!
                 Task {
                     do {
+                        //skeletons!!
                         let projectsData = try await ProjectService.Shared.getProjects()
                         store.send(.setProjects(projectsData))
                     }
