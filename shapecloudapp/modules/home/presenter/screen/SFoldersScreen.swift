@@ -49,7 +49,7 @@ struct SFoldersScreen: View {
                         .scrollIndicators(.hidden)
                     } header: {
                         Text("Folders")
-                            .font(.title2)
+                            .font(.system(size: 18))
                             .fontWeight(.bold)
                             .padding(.bottom,4)
                             .frame(maxWidth: .infinity,alignment: .leading)
@@ -62,7 +62,7 @@ struct SFoldersScreen: View {
                         }
                     } header: {
                         Text("Files")
-                            .font(.title2)
+                            .font(.system(size: 18))
                             .fontWeight(.bold)
                             .padding(.bottom,4)
                             .frame(maxWidth: .infinity,alignment: .leading)
@@ -75,12 +75,16 @@ struct SFoldersScreen: View {
         .padding(.horizontal, SScreenSize.hPadding)
         .onAppear {
             withAnimation(.easeInOut(duration: 0.5)) {
-                isBotTabBarHidden = true
+                if isBotTabBarHidden != true {
+                    isBotTabBarHidden = true
+                }
             }
         }
         .onDisappear {
             withAnimation(.easeInOut(duration: 0.5)) {
-                isBotTabBarHidden = false
+                if isBotTabBarHidden != false {
+                    isBotTabBarHidden = false
+                }
             }
         }
         .buttonStyle(.plain)

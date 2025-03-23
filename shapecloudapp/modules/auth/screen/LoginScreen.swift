@@ -15,6 +15,8 @@ struct LoginScreen: View {
     @Environment(\.screenSize) private var screensize
     @Environment(\.dismiss) private var dismiss
     
+    @State private var isLoading : Bool = false
+    
     var body: some View {
         
         ZStack(alignment:.bottom) {
@@ -40,18 +42,24 @@ struct LoginScreen: View {
                 Button {
                     Task {
                         do{
+                            isLoading = true
+                            defer{
+                                isLoading = false
+                            }
+                            
                             let responseDto = try await AuthService.shared.Login(loginDto: LoginDto(email: email, password: password, role: USER_ROLES.user))
                             guard responseDto.success else{
                                 throw NSError(domain: responseDto.error?.name ?? "Server Error", code: responseDto.statusCode, userInfo: [NSLocalizedDescriptionKey: responseDto.error?.message! ?? "Unexpected Error"])
                             }
                             store.send(.setUser(responseDto.data!.user))
-//                            store.send(.setUser(User(_id: "12", name: "Miguel", email: "mgutierrez", role: .user, companyId: "2314")))
                         }
                         catch {
                             print(error.localizedDescription)
                         }
                     }
                 } label: {
+                    //great transition!
+                    //https://dribbble.com/shots/4260546-Login-loading-app-screen
                     Text("Login")
                         .font(.callout)
                         .fontWeight(.medium)

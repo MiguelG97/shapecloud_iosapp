@@ -23,6 +23,10 @@ struct SProjectsScreen: View {
     @Environment(\.screenSize) private var screenSize: CGSize
     @Environment(\.dismiss) var dismiss
     
+    private var isLoading : Bool {
+        store.projects.isEmpty
+    }
+    
     var body: some View {
         NavigationStack(path:$store.navigationPath.sending(\.setNavigationPath)) {
             ScrollView(.vertical){
@@ -63,10 +67,20 @@ struct SProjectsScreen: View {
                 }.frame(height: 0)
                 
                 VStack(spacing:16) {
-                    ForEach(store.projects,id:\._id) { projectItem in
-                        NavigationLink(value: projectItem) {
-                            SProjectItem(project: projectItem)
-                                .foregroundStyle(Color.theme.foreground)
+                    if isLoading {
+                        ForEach(0..<5) { number in
+                            ProjectItemSkeleton()
+                        }
+                    }
+                    else{
+                        ForEach(store.projects,id:\._id) { projectItem in
+                            NavigationLink(value: projectItem) {
+                                SProjectItem(project: projectItem)
+                                    .foregroundStyle(Color.theme.foreground)
+                            }
+                            .simultaneousGesture(TapGesture().onEnded({ _ in
+                                store.send(.setCurrentProjectSelected(projectItem.name))
+                            }))
                         }
                     }
                 }
@@ -115,16 +129,26 @@ struct SProjectsScreen: View {
                 scrollview.bounces = true
             }
             .onAppear {
-                //not on appear but do it only once or on pull to refresh!
                 Task {
-                    do {
-                        //skeletons!!
-                        let projectsData = try await ProjectService.Shared.getProjects()
-                        store.send(.setProjects(projectsData))
+                    if isLoading{
+                        do {
+                            let projectsData = try await ProjectService.Shared.getProjects()
+                            store.send(.setProjects(projectsData))
+                        }
+                        catch{
+                            print("error found: ",error.localizedDescription)
+                        }
                     }
-                    catch{
-                        print("error found: ",error.localizedDescription)
-                    }
+                    
+                }
+            }
+            .refreshable {
+                do {
+                    let projectsData = try await ProjectService.Shared.getProjects()
+                    store.send(.setProjects(projectsData))
+                }
+                catch{
+                    print("error found: ",error.localizedDescription)
                 }
             }
         }

@@ -53,6 +53,7 @@ struct SFolderCard: View {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.theme.border,lineWidth: 2)
         }
+        .contentShape(Rectangle()) //entirely hittable
     }
 }
 

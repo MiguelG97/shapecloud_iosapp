@@ -27,10 +27,12 @@ struct ProjectsFeature{
 //               Project(name: "Project 5", location: "Description 5",folderStructure: [defaultFolder],companyId: "5"),
 //            Project(name: "Project 6", location: "Description 6",folderStructure: [defaultFolder],companyId: "6"),
         ]
+        var currentProjectSelected : String?
     }
     enum Action{
         case setNavigationPath([Project])
         case setProjects([Project])
+        case setCurrentProjectSelected(String?)
         case popNavigation
     }
     
@@ -43,10 +45,14 @@ struct ProjectsFeature{
                 case .setProjects(let projects):
                     state.projects = projects
                     return .none
+                case .setCurrentProjectSelected(let projectName):
+                    state.currentProjectSelected = projectName
+                    return .none
                 case .popNavigation:
                     if !state.navigationPath.isEmpty {
                         state.navigationPath.removeLast()
                     }
+                    state.currentProjectSelected = nil
                     return .none
             }
         }

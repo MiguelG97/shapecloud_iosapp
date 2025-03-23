@@ -38,6 +38,7 @@ struct SFolderBreadCumber: View {
                     }
                 }
             }
+            .font(.system(size: 20))
         }
         .scrollBounceBehavior(.basedOnSize)
         .frame(maxWidth: .infinity,alignment: .leading)

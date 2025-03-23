@@ -23,7 +23,7 @@ struct HomeScreen: View {
     @Environment(\.screenSize) private var screenSize : CGSize
     @Environment(\.safeArea) private var safeArea : EdgeInsets
     
-    var isNestedView: Bool {
+    private var isNestedView: Bool {
         switch store.selectedTab {
         case .projects:
             return store.projects.navigationPath.count > 0
@@ -35,8 +35,9 @@ struct HomeScreen: View {
             return false
         }
     }
-    
-    @State private var isBotTabBarHidden: Bool = false
+    private var appBarTitle : String {
+        store.projects.currentProjectSelected ?? "SHAPECLOUD"
+    }
     
     var body: some View {
          
@@ -65,7 +66,7 @@ struct HomeScreen: View {
             .padding(.bottom,20)
             .frame(maxWidth: .infinity,maxHeight: .infinity,alignment: .top)
             .overlay(alignment: .top) {
-                SAppBarView(title:"SHAPECLOUD",icon: Image(systemName: isNestedView ? "chevron.backward":"line.3.horizontal"),iconCallBack: {
+                SAppBarView(title:appBarTitle,icon: Image(systemName: isNestedView ? "chevron.backward":"line.3.horizontal"),iconCallBack: {
                     store.send(.popNavigation)
                 })
                 .offset(y: safeArea.top*0.8)
