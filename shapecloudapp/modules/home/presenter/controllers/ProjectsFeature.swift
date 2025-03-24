@@ -15,21 +15,13 @@ struct ProjectsFeature{
     struct State: Equatable{
         var navigationPath : [Project] = []
         var projects : [Project] = [
-//            Project(name: "Huascar 203", location: "Perú",folderStructure: [
-//                TreeViewBaseItem(id: "1", label: "MEP",children: [
-//                    TreeViewBaseItem(id: "1-1", label: "Rvt models", children: [], files: [TreeFile(id: "UNIDAA123", name: "Asia Boulevard", extName: .rvt)]),
-//                    TreeViewBaseItem(id: "1-2", label: "Nws models", children: [], files: [TreeFile(id: "Rvt245", name: "Asia Navis", extName: .nwd)])
-//                ],files: [TreeFile(id: "some", name: "Harass 123", extName: .rvt)])
-//            ], companyId: "asdd1"),
-//            Project(name: "Project 2", location: "Description 2",folderStructure: [defaultFolder],companyId: "2"),
-//               Project(name: "Project 3", location: "Description 3",folderStructure: [defaultFolder],companyId: "3"),
-//               Project(name: "Project 4", location: "Description 4",folderStructure: [defaultFolder],companyId: "4"),
-//               Project(name: "Project 5", location: "Description 5",folderStructure: [defaultFolder],companyId: "5"),
-//            Project(name: "Project 6", location: "Description 6",folderStructure: [defaultFolder],companyId: "6"),
+//            Project(id: "1", name: "miguel", location: "Peru", createdOn: .now, folderStructure: [defaultFolder], companyId: "12314"),
+//             Project(id: "3", name: "miguel", location: "Peru", createdOn: .now, folderStructure: [defaultFolder], companyId: "12314")
         ]
         var currentProjectSelected : String?
     }
     enum Action{
+        case pushNavigationPath(Project)
         case setNavigationPath([Project])
         case setProjects([Project])
         case setCurrentProjectSelected(String?)
@@ -39,7 +31,11 @@ struct ProjectsFeature{
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+                case .pushNavigationPath(let newPath):
+                    state.navigationPath.append(newPath)
+                    return .none
                 case .setNavigationPath(let navigationPath):
+                    print("🔍 NavigationPath updated:", navigationPath) // Debug Log
                     state.navigationPath = navigationPath
                     return .none
                 case .setProjects(let projects):

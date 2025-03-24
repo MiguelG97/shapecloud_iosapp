@@ -71,6 +71,7 @@ struct SProjectItem: View {
 //                    }
             }
         }
+        .contentShape(Rectangle())
     }
 }
 
