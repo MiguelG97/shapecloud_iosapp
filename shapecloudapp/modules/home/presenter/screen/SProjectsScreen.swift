@@ -36,7 +36,7 @@ struct SProjectsScreen: View {
                         else{
                             ForEach(store.projects,id:\._id) { projectItem in
                                 Button{
-                                    store.send(.pushNavigationPath(projectItem))
+                                    store.send(.pushNavigationPath(.project(projectItem)))
                                     store.send(.setCurrentProjectSelected(projectItem.name))
                                 } label: {
                                     SProjectItem(project: projectItem)
@@ -89,9 +89,17 @@ struct SProjectsScreen: View {
             .listStyle(PlainListStyle())
             .listSectionSeparator(.hidden)
             .scrollIndicators(.hidden)
-            .navigationDestination(for: Project.self) { project in
-                SFoldersScreen(project:project,isBotTabBarHidden: $isBotTabBarHidden)
-                .toolbar(.hidden)
+            .navigationDestination(for: ProjectNavigationDestination.self) { destination in
+                
+                switch destination{
+                    case .project(let project):
+                    SFoldersScreen(store: store, project:project,isBotTabBarHidden: $isBotTabBarHidden)
+                        .toolbar(.hidden)
+                    case .viewerModel(let viewerModel):
+                        SViewerScreen(projectId: viewerModel.projectId, modelId: viewerModel.modelId)
+                        .toolbar(.hidden)
+                }
+                
             }
             .padding(.horizontal,SScreenSize.hPadding)
             .onAppear {
@@ -117,12 +125,25 @@ struct SProjectsScreen: View {
                     print("error found: ",error.localizedDescription)
                 }
             }
-        }.onChange(of: store.navigationPath, { a, b in
-            print("Navigation path changed:", b)
-        })
-
+        }
     }
+    
+//    private func destinationView(for destination: ProjectNavigationDestination) -> some View {
+//        switch destination {
+//        case .project(let project):
+//            return AnyView(
+//                SFoldersScreen(project: project, isBotTabBarHidden: $isBotTabBarHidden)
+//                    .toolbar(.hidden)
+//            )
+//
+//        case .viewerModel(let viewerModel):
+//            return AnyView(
+//                SViewerScreen(projectId: viewerModel.projectId, modelId: viewerModel.modelId)
+//            )
+//        }
+//    }
 }
+
 
 #Preview {
     SProjectsScreen(store:Store(initialState: ProjectsFeature.State(), reducer: {

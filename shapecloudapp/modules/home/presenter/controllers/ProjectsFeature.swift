@@ -7,22 +7,26 @@
 
 let defaultFolder = TreeViewBaseItem(id: "1", label: "root folder");
 
+
+enum ProjectNavigationDestination: Hashable {
+    case project(Project)
+    case viewerModel(ViewerNavigationModel)
+}
+
 import ComposableArchitecture
 @Reducer
 struct ProjectsFeature{
     
     @ObservableState
     struct State: Equatable{
-        var navigationPath : [Project] = []
+        var navigationPath : [ProjectNavigationDestination] = []
         var projects : [Project] = [
-//            Project(id: "1", name: "miguel", location: "Peru", createdOn: .now, folderStructure: [defaultFolder], companyId: "12314"),
-//             Project(id: "3", name: "miguel", location: "Peru", createdOn: .now, folderStructure: [defaultFolder], companyId: "12314")
         ]
         var currentProjectSelected : String?
     }
     enum Action{
-        case pushNavigationPath(Project)
-        case setNavigationPath([Project])
+        case pushNavigationPath(ProjectNavigationDestination)
+        case setNavigationPath([ProjectNavigationDestination])
         case setProjects([Project])
         case setCurrentProjectSelected(String?)
         case popNavigation
@@ -31,12 +35,11 @@ struct ProjectsFeature{
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-                case .pushNavigationPath(let newPath):
-                    state.navigationPath.append(newPath)
+                case .pushNavigationPath(let newProjectDestination):
+                    state.navigationPath.append(newProjectDestination)
                     return .none
-                case .setNavigationPath(let navigationPath):
-                    print("🔍 NavigationPath updated:", navigationPath) // Debug Log
-                    state.navigationPath = navigationPath
+                case .setNavigationPath(let projectDestination):
+                    state.navigationPath = projectDestination
                     return .none
                 case .setProjects(let projects):
                     state.projects = projects

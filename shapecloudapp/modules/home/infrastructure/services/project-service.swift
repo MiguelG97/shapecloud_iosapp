@@ -20,7 +20,6 @@ class ProjectService {
         request.httpMethod = "GET"
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         
-//        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1ndXRpZXJyZXpAc2hhcGVjbG91ZC5jb20iLCJwYXNzd29yZCI6Im1pZ3VlbDEyMzQiLCJyb2xlIjoiMCIsImNvbXBhbnlJZCI6IjY3MzJjMzcyZDQxZWEwZWFkZDNiZDA1NyIsInVzZXJJZCI6IjY3MzJkOWU5MmRmNGM1Y2RiN2UyYzM4NSIsImlhdCI6MTc0MTU3NDUyMiwiZXhwIjoxNzQxNTg1MzIyfQ.k8MxmyHGJtPvhMHFtGI0z8tr2KT-DFpcYHSiEIG-7J"
         guard let token = TokenManager.getToken(), token != "" else {
             throw NSError(domain: "URLerror", code: 104, userInfo: [NSLocalizedDescriptionKey : "Token not found"])
         }

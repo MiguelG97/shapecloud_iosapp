@@ -7,17 +7,21 @@
 
 import SwiftUI
 import SwiftUIIntrospect
+import ComposableArchitecture
 
 struct SFoldersScreen: View {
+    var store: StoreOf<ProjectsFeature>
+    
     var project: Project
     
     @Binding var isBotTabBarHidden: Bool
     
     @State private var selectedFolder : TreeViewBaseItem
     
-    init(project: Project, isBotTabBarHidden: Binding<Bool>) {
+    init(store: StoreOf<ProjectsFeature>, project: Project, isBotTabBarHidden: Binding<Bool>) {
         self.project = project
         self._isBotTabBarHidden = isBotTabBarHidden
+        self.store = store
         
         _selectedFolder = State(initialValue: project.folderStructure.first!)
     }
@@ -59,6 +63,11 @@ struct SFoldersScreen: View {
                     Section {
                         ForEach(selectedFolder.files ?? [], id: \.self) { file in
                             SFileItem(file: file)
+                                .onTapGesture {
+                                    if file.isViewable == true {
+                                        store.send(.pushNavigationPath(.viewerModel(ViewerNavigationModel(projectId: project._id, modelId: file.id))))
+                                    }
+                                }
                         }
                     } header: {
                         Text("Files")
@@ -93,7 +102,9 @@ struct SFoldersScreen: View {
 }
 
 #Preview {
-    SFoldersScreen(project: Project(id: "123", name: "Huascar 203", location: "Perú",folderStructure: [
+    SFoldersScreen(store: Store(initialState: ProjectsFeature.State(), reducer: {
+        ProjectsFeature()
+    }), project: Project(id: "123", name: "Huascar 203", location: "Perú",folderStructure: [
         TreeViewBaseItem(id: "1", label: "MEP",children:[
             TreeViewBaseItem(id: "1-1", label: "Struc"),
             TreeViewBaseItem(id: "1-2", label: "Struc x2"),
