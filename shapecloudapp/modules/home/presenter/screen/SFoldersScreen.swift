@@ -14,13 +14,10 @@ struct SFoldersScreen: View {
     
     var project: Project
     
-    @Binding var isBotTabBarHidden: Bool
-    
     @State private var selectedFolder : TreeViewBaseItem
     
-    init(store: StoreOf<ProjectsFeature>, project: Project, isBotTabBarHidden: Binding<Bool>) {
+    init(store: StoreOf<ProjectsFeature>, project: Project) {
         self.project = project
-        self._isBotTabBarHidden = isBotTabBarHidden
         self.store = store
         
         _selectedFolder = State(initialValue: project.folderStructure.first!)
@@ -82,20 +79,6 @@ struct SFoldersScreen: View {
         }
         .padding(.top,12)
         .padding(.horizontal, SScreenSize.hPadding)
-        .onAppear {
-            withAnimation(.easeInOut(duration: 0.5)) {
-                if isBotTabBarHidden != true {
-                    isBotTabBarHidden = true
-                }
-            }
-        }
-        .onDisappear {
-            withAnimation(.easeInOut(duration: 0.5)) {
-                if isBotTabBarHidden != false {
-                    isBotTabBarHidden = false
-                }
-            }
-        }
         .buttonStyle(.plain)
         
     }
@@ -109,7 +92,7 @@ struct SFoldersScreen: View {
             TreeViewBaseItem(id: "1-1", label: "Struc"),
             TreeViewBaseItem(id: "1-2", label: "Struc x2"),
         ]),
-    ], companyId: "asdd1"),isBotTabBarHidden: .constant(false))
+    ], companyId: "asdd1"))
         .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
         .environment(\.screenSize, CGSize(width: 402, height: 874))
         .environment(\.safeArea, EdgeInsets(top: 62, leading: 0, bottom: 34, trailing: 0))

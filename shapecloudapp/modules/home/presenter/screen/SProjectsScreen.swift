@@ -13,7 +13,6 @@ struct SProjectsScreen: View {
     @Bindable var store: StoreOf<ProjectsFeature>
     
     @State private var searchText: String = ""
-    @Binding var isBotTabBarHidden: Bool
     
     @Environment(\.safeArea) private var safeArea: EdgeInsets
     @Environment(\.screenSize) private var screenSize: CGSize
@@ -93,7 +92,7 @@ struct SProjectsScreen: View {
                 
                 switch destination{
                     case .project(let project):
-                    SFoldersScreen(store: store, project:project,isBotTabBarHidden: $isBotTabBarHidden)
+                    SFoldersScreen(store: store, project:project)
                         .toolbar(.hidden)
                     case .viewerModel(let viewerModel):
                         SViewerScreen(projectId: viewerModel.projectId, modelId: viewerModel.modelId)
@@ -128,27 +127,14 @@ struct SProjectsScreen: View {
         }
     }
     
-//    private func destinationView(for destination: ProjectNavigationDestination) -> some View {
-//        switch destination {
-//        case .project(let project):
-//            return AnyView(
-//                SFoldersScreen(project: project, isBotTabBarHidden: $isBotTabBarHidden)
-//                    .toolbar(.hidden)
-//            )
-//
-//        case .viewerModel(let viewerModel):
-//            return AnyView(
-//                SViewerScreen(projectId: viewerModel.projectId, modelId: viewerModel.modelId)
-//            )
-//        }
-//    }
+    
 }
 
 
 #Preview {
     SProjectsScreen(store:Store(initialState: ProjectsFeature.State(), reducer: {
         ProjectsFeature()
-    }),isBotTabBarHidden: .constant(false))
+    }))
         .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
         .environment(\.screenSize, CGSize(width: 402, height: 874))
         .environment(\.safeArea, EdgeInsets(top: 62, leading: 0, bottom: 34, trailing: 0))

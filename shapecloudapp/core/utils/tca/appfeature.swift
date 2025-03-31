@@ -13,7 +13,6 @@ struct AppFeature {
     @ObservableState
     struct State: Equatable{
         var selectedTab : STab = .projects
-        var isBotTabBarHidden : Bool = false
         var isLaunchScreenVisible : Bool = true
         
         var projects = ProjectsFeature.State()
@@ -22,7 +21,6 @@ struct AppFeature {
     
     enum Action{
         case setSelectedTab(STab)
-        case setisBotTabBarHidden(Bool)
         case setLaunchScreenVisibility(Bool)
         
         case projects(ProjectsFeature.Action)
@@ -44,9 +42,6 @@ struct AppFeature {
             switch action {
                 case .setSelectedTab(let tab):
                     state.selectedTab = tab
-                    return .none
-                case .setisBotTabBarHidden(let hidden):
-                    state.isBotTabBarHidden = hidden
                     return .none
                 case .setLaunchScreenVisibility(let visibility):
                     state.isLaunchScreenVisible = visibility

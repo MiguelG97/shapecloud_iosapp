@@ -7,11 +7,17 @@
 
 import SwiftUI
 
+enum BottomBarStatus{
+    case visible
+    case semiVisible
+    case hidden
+}
+
 struct SBottomTabBar: View {
     @Environment(\.screenSize) private var screenSize: CGSize
     @Binding var selectedTab: STab
     
-    var isBarHidden : Bool = true
+    var barStatus : BottomBarStatus = .hidden
     
     private let tabBarHeight: Double = 106
     
@@ -24,6 +30,7 @@ struct SBottomTabBar: View {
         
         ZStack {
             
+            //i) Crown background
             Path { path in
                 path.move(to: CGPoint(x: 0, y: 0))
                 path.addLine(to: CGPoint(x: 0, y: tabBarHeight))
@@ -38,8 +45,9 @@ struct SBottomTabBar: View {
             }
             .fill(.white)
             .shadow(color:.black.opacity(0.1),radius: 10,x: 0,y: -5)
-            .offset(y: isBarHidden ? tabBarHeight : 0)
+            .offset(y: barStatus != .visible ? tabBarHeight : 0)
             
+            //ii) Tab icons
             HStack {
                 HStack(spacing:screenSize.width*0.1) {
                     Button {
@@ -78,8 +86,9 @@ struct SBottomTabBar: View {
             .padding(.horizontal,   screenSize.width*0.077)
             .foregroundStyle(Color.theme.icon)
             .font(.system(size: 24))
-            .offset(y: isBarHidden ? tabBarHeight : 5)
+            .offset(y: barStatus != .visible ? tabBarHeight : 5)
             
+            //iii) plus button
             Button {
                 
             } label: {
@@ -91,13 +100,13 @@ struct SBottomTabBar: View {
                     .background(Color.theme.primary)
                     .clipShape(.circle)
                     .shadow(color: Color.theme.primary.opacity(0.8), radius: 10, x: 0, y: 5)
-                    
             }
-            .frame(maxWidth: .infinity,alignment: isBarHidden ? .trailing: .center)
-            .offset(x:isBarHidden ? -16 : 0,y: -18)
-            
+            .frame(maxWidth: .infinity,alignment: barStatus == .semiVisible || barStatus == .hidden ? .trailing: .center)
+            .offset(x:barStatus == .semiVisible ? -16 :
+                        barStatus == .hidden ? 80 : 0,y: -18)
         }
         .frame(maxWidth: .infinity,maxHeight: 106)
+        .animation(.easeInOut, value: barStatus)
     }
 }
 

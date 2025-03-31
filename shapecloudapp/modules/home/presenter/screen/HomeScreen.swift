@@ -35,6 +35,29 @@ struct HomeScreen: View {
             return false
         }
     }
+    private var barStatus: BottomBarStatus {
+        switch store.selectedTab{
+            case .projects:
+                let viewerModelExist = store.projects.navigationPath.contains(where: {
+                    if case .viewerModel(_) = $0 {
+                        return true
+                    }
+                    else {return false}
+                });
+                if viewerModelExist {
+                    return .hidden
+                }
+                else {
+                    return store.projects.navigationPath.count > 0 ? .semiVisible :.visible
+                }
+            case .profile:
+                return .visible
+            case .search:
+                return .visible
+            case .support:
+                return .visible
+        }
+    }
     private var appBarTitle : String {
         store.projects.currentProjectSelected ?? "SHAPECLOUD"
     }
@@ -47,7 +70,7 @@ struct HomeScreen: View {
                 case .projects:
                     Spacer()
                         .frame(maxWidth: .infinity,maxHeight: safeArea.top*0.8 + 50)
-                    SProjectsScreen(store:store.scope(state: \.projects, action: \.projects),isBotTabBarHidden: $store.isBotTabBarHidden.sending(\.setisBotTabBarHidden))
+                    SProjectsScreen(store:store.scope(state: \.projects, action: \.projects))
                 case .search:
                     VStack {
                         Color.red
@@ -75,7 +98,7 @@ struct HomeScreen: View {
                     }
             }
             
-            SBottomTabBar(selectedTab: $store.selectedTab.sending(\.setSelectedTab),isBarHidden: store.isBotTabBarHidden)
+            SBottomTabBar(selectedTab: $store.selectedTab.sending(\.setSelectedTab), barStatus: barStatus)
         }
         .ignoresSafeArea()
     }

@@ -9,7 +9,8 @@ import SwiftUI
 
 struct SViewerScreen: View {
 
-    //show a loading indicator while the webview initialize!
+    @State private var isLoading = true
+    
     var projectId : String
     var modelId : String
     var webUrl : String {
@@ -17,8 +18,19 @@ struct SViewerScreen: View {
     }
     
     var body: some View {
-        SViewerWebView(url: webUrl,token: TokenManager.getToken()!)
-            .ignoresSafeArea()
+        ZStack{
+            SViewerWebView(url: webUrl,token: TokenManager.getToken()!,isLoading: $isLoading)
+            if isLoading{
+                VStack {
+                    ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .scaleEffect(1.5)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.white)
+            }
+        }
+        .ignoresSafeArea()
     }
 }
 
