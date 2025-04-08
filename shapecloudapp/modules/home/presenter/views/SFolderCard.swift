@@ -54,6 +54,7 @@ struct SFolderCard: View {
                 .stroke(Color.theme.border,lineWidth: 2)
         }
         .contentShape(Rectangle()) //entirely hittable
+        .foregroundStyle(Color.theme.foreground)
     }
 }
 

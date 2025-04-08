@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SAppBarView<Icon:View>: View {
     
-    var title: String = "SHAPECLOUD"
+    var title: String = "ShapeCloud"
     var icon: Icon
     var iconCallBack: (() -> Void)?
     

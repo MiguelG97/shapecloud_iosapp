@@ -80,7 +80,11 @@ struct SFoldersScreen: View {
         .padding(.top,12)
         .padding(.horizontal, SScreenSize.hPadding)
         .buttonStyle(.plain)
-        
+        .background {
+            Color.white
+        }
+        .foregroundStyle(Color.theme.foreground)
+        .ignoresSafeArea()
     }
 }
 

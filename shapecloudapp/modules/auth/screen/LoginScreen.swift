@@ -7,15 +7,18 @@
 
 import SwiftUI
 import ComposableArchitecture
+import Combine
 
 struct LoginScreen: View {
     var store : StoreOf<AuthFeature>
-    @State private var email: String = "mgutierrez@shapecloud.com"
-    @State private var password: String = "miguel1234"
+    @State private var email: String = ""
+    @State private var password: String = ""
     @Environment(\.screenSize) private var screensize
+    @Environment(\.safeArea) private var safeArea
     @Environment(\.dismiss) private var dismiss
     
     @State private var isLoading : Bool = false
+    @StateObject  private var keyboardObserver = KeyboardObserver()
     
     var body: some View {
         
@@ -27,6 +30,7 @@ struct LoginScreen: View {
                     Text("Login")
                         .font(.largeTitle)
                         .fontWeight(.semibold)
+                        .foregroundStyle(Color.theme.foreground)
                     Text("Enter your shapecloud account email address and password")
                         .font(.callout)
                         .foregroundStyle(Color.theme.foreground_muted)
@@ -80,23 +84,52 @@ struct LoginScreen: View {
                 Color.white
             }
             .clipShape(.rect(topLeadingRadius: 80))
+                .offset(y: -keyboardObserver.keyboardHeight)
+            .animation(.easeOut(duration: 0.25), value: keyboardObserver.keyboardHeight)
             
-        }.ignoresSafeArea()
-            .navigationBarBackButtonHidden()
-            .toolbar{
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(action: {dismiss()}) {
-                        Image(systemName: "chevron.left")
-                            .foregroundStyle(.white)
-                            .fontWeight(.semibold)
-                    }
+        }
+        .navigationBarBackButtonHidden()
+        .toolbar{
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: {dismiss()}) {
+                    Image(systemName: "chevron.left")
+                        .foregroundStyle(.white)
+                        .fontWeight(.semibold)
                 }
             }
+        }
+        .ignoresSafeArea()
+        .onReceive(keyboardObserver.$keyboardHeight) { newHeight in
+            print("📏 Keyboard height changed:", newHeight)
+            print("screen size height",screensize.height)
+        }
     }
 }
+
+class KeyboardObserver: ObservableObject {
+    @Published var keyboardHeight: CGFloat = 0
+    private var cancellables: Set<AnyCancellable> = []
+
+    init() {
+        NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
+            .sink { notification in
+                if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                    self.keyboardHeight = keyboardFrame.size.height
+                }
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)
+            .sink { _ in
+                self.keyboardHeight = 0
+            }
+            .store(in: &cancellables)
+    }
+}
+
 
 #Preview {
     LoginScreen(store:Sstore.scope(state: \.auth, action: \.auth))
         .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
-        .environment(\.screenSize, CGSize(width: 402, height: 874))
+        .environment(\.screenSize, CGSize(width: 440, height: 874))
 }

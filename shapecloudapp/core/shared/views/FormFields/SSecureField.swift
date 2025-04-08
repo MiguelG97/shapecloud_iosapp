@@ -50,6 +50,7 @@ struct SSecureField: View {
             }
         }
         .font(.callout)
+        .foregroundStyle(Color.theme.foreground)
     }
 }
 

@@ -13,6 +13,7 @@ struct SSearchField: View {
         HStack {
             Image(systemName: "magnifyingglass")
             TextField("Search", text: $searchValue, prompt: Text("Search project"))
+                .foregroundStyle(Color.theme.foreground.opacity(0.5))
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled(true)
                 .frame(maxWidth: .infinity)

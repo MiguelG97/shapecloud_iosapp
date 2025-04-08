@@ -33,6 +33,7 @@ struct STextField<Icon:View>: View {
             }
             
         }
+        .foregroundStyle(Color.theme.foreground)
     }
 }
 

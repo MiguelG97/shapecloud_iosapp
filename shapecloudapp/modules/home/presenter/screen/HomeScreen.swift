@@ -59,7 +59,7 @@ struct HomeScreen: View {
         }
     }
     private var appBarTitle : String {
-        store.projects.currentProjectSelected ?? "SHAPECLOUD"
+        store.projects.currentProjectSelected ?? "CevicheCloud"
     }
     
     var body: some View {
@@ -67,22 +67,38 @@ struct HomeScreen: View {
         ZStack(alignment:.bottom) {
             VStack {
                 switch store.selectedTab {
-                case .projects:
-                    Spacer()
-                        .frame(maxWidth: .infinity,maxHeight: safeArea.top*0.8 + 50)
-                    SProjectsScreen(store:store.scope(state: \.projects, action: \.projects))
-                case .search:
-                    VStack {
-                        Color.red
-                    }
-                case .support:
-                    VStack {
-                        Color.green
-                    }
-                case .profile:
-                    VStack {
-                        Color.purple
-                    }
+                    case .projects:
+                        Spacer()
+                            .frame(maxWidth: .infinity,maxHeight: safeArea.top*0.8 + 50)
+                        SProjectsScreen(store:store.scope(state: \.projects, action: \.projects))
+                        
+                    case .search:
+                        VStack {
+                            Text("...in development")
+                                .foregroundStyle(Color.theme.foreground)
+                        }
+                        .frame(maxWidth: .infinity,maxHeight: .infinity)
+                        .background {
+                            Color.white
+                        }
+                    case .support:
+                        VStack {
+                            Text("...in development")
+                                .foregroundStyle(Color.theme.foreground)
+                        }
+                        .frame(maxWidth: .infinity,maxHeight: .infinity)
+                        .background {
+                            Color.white
+                        }
+                    case .profile:
+                        VStack {
+                            Text("...in development")
+                                .foregroundStyle(Color.theme.foreground)
+                        }
+                        .frame(maxWidth: .infinity,maxHeight: .infinity)
+                        .background {
+                            Color.white
+                        }
                 }
                 
             }
@@ -94,8 +110,8 @@ struct HomeScreen: View {
                 })
                 .offset(y: safeArea.top*0.8)
                 .background {
-                        Color.white
-                    }
+                    Color.white
+                }
             }
             
             SBottomTabBar(selectedTab: $store.selectedTab.sending(\.setSelectedTab), barStatus: barStatus)
@@ -107,6 +123,6 @@ struct HomeScreen: View {
 #Preview {
     HomeScreen(store:Sstore)
         .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
-        .environment(\.screenSize, CGSize(width: 402, height: 874))
+        .environment(\.screenSize, CGSize(width: 440, height: 874))
         .environment(\.safeArea, EdgeInsets(top: 62, leading: 0, bottom: 34, trailing: 0))
 }

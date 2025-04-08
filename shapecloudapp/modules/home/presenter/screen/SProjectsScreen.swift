@@ -34,18 +34,24 @@ struct SProjectsScreen: View {
                         }
                         else{
                             ForEach(store.projects,id:\._id) { projectItem in
-                                Button{
-                                    store.send(.pushNavigationPath(.project(projectItem)))
-                                    store.send(.setCurrentProjectSelected(projectItem.name))
-                                } label: {
-                                    SProjectItem(project: projectItem)
-                                        .foregroundStyle(Color.theme.foreground)
+                                if projectItem.name.range(of: searchText, options: [.caseInsensitive, .diacriticInsensitive]) != nil || searchText == "" {
+                                    Button{
+                                        store.send(.pushNavigationPath(.project(projectItem)))
+                                        store.send(.setCurrentProjectSelected(projectItem.name))
+                                    } label: {
+                                        SProjectItem(project: projectItem)
+                                            .foregroundStyle(Color.theme.foreground)
+                                    }
                                 }
+                                
                                 
                             }
                         }
                     }
-                    
+                    .background {
+                        Color.white
+                    }
+                    .listRowInsets(EdgeInsets())
                 } header: {
                     VStack(spacing:16) {
                         HStack {
@@ -82,10 +88,17 @@ struct SProjectsScreen: View {
                     .padding(.bottom,16)
                     .background(.white)
                 }
+                .background{
+                    Color.white
+                }
                 .listRowInsets(EdgeInsets())
             }
+            .scrollContentBackground(.hidden)
+            .padding(.horizontal,SScreenSize.hPadding)
+            .background(Color.white)
             .buttonStyle(PlainButtonStyle())
             .listStyle(PlainListStyle())
+            .listRowInsets(EdgeInsets())
             .listSectionSeparator(.hidden)
             .scrollIndicators(.hidden)
             .navigationDestination(for: ProjectNavigationDestination.self) { destination in
@@ -100,7 +113,7 @@ struct SProjectsScreen: View {
                 }
                 
             }
-            .padding(.horizontal,SScreenSize.hPadding)
+            .ignoresSafeArea()
             .onAppear {
                 Task {
                     if isLoading{
@@ -126,8 +139,6 @@ struct SProjectsScreen: View {
             }
         }
     }
-    
-    
 }
 
 
@@ -136,6 +147,6 @@ struct SProjectsScreen: View {
         ProjectsFeature()
     }))
         .environment(\.font, .custom(ThemeFonts.shared.geistRegular, size: 16))
-        .environment(\.screenSize, CGSize(width: 402, height: 874))
+        .environment(\.screenSize, CGSize(width: 440, height: 874))
         .environment(\.safeArea, EdgeInsets(top: 62, leading: 0, bottom: 34, trailing: 0))
 }

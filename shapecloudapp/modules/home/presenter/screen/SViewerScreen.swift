@@ -14,12 +14,15 @@ struct SViewerScreen: View {
     var projectId : String
     var modelId : String
     var webUrl : String {
-        "https://shapecloudapp.com/projects/\(projectId)/model/\(modelId)"
+        "https://shapecloudapp.com/projects/\(projectId)/model/\(modelId)?isWkWebView=true"
     }
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         ZStack{
-            SViewerWebView(url: webUrl,token: TokenManager.getToken()!,isLoading: $isLoading)
+            SViewerWebView(url: webUrl,token: TokenManager.getToken()!,isLoading: $isLoading){
+                dismiss()
+            }
             if isLoading{
                 VStack {
                     ProgressView()

@@ -62,16 +62,15 @@ struct SProjectItem: View {
             .font(.system(size: 14))
         }
         .padding(4)
+        .background{Color.white}
         .background {
             GeometryReader { proxy in
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(Color.theme.foreground_muted,lineWidth: 0.6)
-//                    .onAppear {
-//                        print(proxy.size.height)
-//                    }
             }
         }
         .contentShape(Rectangle())
+        .foregroundStyle(Color.theme.foreground)
     }
 }
 

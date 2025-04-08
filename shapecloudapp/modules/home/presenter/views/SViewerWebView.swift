@@ -11,13 +11,18 @@ struct SViewerWebView: UIViewRepresentable{
     var url: String
     var token: String
     @Binding var isLoading: Bool
+    var goBackCallBack : () -> Void = {}
     
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
     
     func makeUIView(context: Context) -> WKWebView {
+        let contentController = WKUserContentController()
+        contentController.add(context.coordinator, name: "goBackHandler")
+        
         let webConfiguration = WKWebViewConfiguration()
+        webConfiguration.userContentController = contentController
         let webView = WKWebView(frame:.zero,configuration:webConfiguration)
         webView.allowsBackForwardNavigationGestures = true
         webView.isInspectable = true
@@ -41,7 +46,7 @@ struct SViewerWebView: UIViewRepresentable{
     }
     
     //coordinator
-    class Coordinator: NSObject, WKNavigationDelegate {
+    class Coordinator: NSObject, WKNavigationDelegate,WKScriptMessageHandler {
         var parent: SViewerWebView
 
         init(_ parent: SViewerWebView) {
@@ -57,6 +62,14 @@ struct SViewerWebView: UIViewRepresentable{
         func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
             DispatchQueue.main.async {
                 self.parent.isLoading = false  // Hide loading on error
+            }
+        }
+        func userContentController(_ userContentController: WKUserContentController,
+                                   didReceive message: WKScriptMessage) {
+            if message.name == "goBackHandler" {
+                DispatchQueue.main.async {
+                    self.parent.goBackCallBack()
+                }
             }
         }
     }

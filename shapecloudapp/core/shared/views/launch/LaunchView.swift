@@ -17,10 +17,13 @@ struct LaunchView: View {
             Image(SImages.shared.launchView)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-            Text("SHAPECLOUDAPP").foregroundStyle(.white)
-                .font(.system(size: 32))
-                .fontWeight(.semibold)
-            LoaderView().offset(x: 0, y: 100)
+            Image(SImages.shared.iconStretched)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 325)
+                .foregroundStyle(Color.white)
+            
+            LoaderView().offset(x: 0, y: 150)
             
         }
         .ignoresSafeArea(edges: .all)

@@ -17,4 +17,5 @@ struct SImages {
     }
     
     let launchView: String = "LaunchView"
+    let iconStretched: String = "sc_stretched"
 }
