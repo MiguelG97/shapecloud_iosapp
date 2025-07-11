@@ -6,10 +6,9 @@ A macOS/iOS application built with **SwiftUI**, designed for the **AEC (Architec
 
 ## 📽️ Demo
 > 📂 To preview the app in action, watch the demo below:
-<video width="700" controls>
-  <source src="media/demo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+
+https://github.com/user-attachments/assets/301ca42c-9d5c-4dfc-ac8e-557c03b855d5
+
 
 ---
 
